@@ -1,0 +1,59 @@
+logging:
+  level:
+    org.nth: debug
+    com.nth: debug
+
+info:
+  app:
+    name: @project.name@
+    groupId: @project.groupId@
+    artifactId: @project.artifactId@
+    version: @project.version@
+
+server:
+  servlet:
+    session:
+      cookie:
+        name: ${spring.application.name}-JSESSIONID
+  tomcat:
+    accesslog:
+      directory: ${user.dir}/${logging.file.path:./logs}/access
+      enabled: true
+      pattern: common
+      request-attributes-enabled: true
+      prefix: access_log
+      rotate: true
+      rename-on-rotate: true
+      suffix: .log
+
+management: # Management configuration
+  endpoint:
+    bigeye:
+      check:
+        general:
+          warning-memory: 95 # Used memory warning percents
+    health:
+      show-details: always
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  application:
+    name: ${info.app.artifactId}
+  main:
+    banner-mode: log
+
+# BCDB
+bcdb:
+  enabled: false # Enable or disable BCDB integration
+  service-url: http://bus1-bcdb.int.ch:8080/bcdb # BCDB service URL
+  username: # BCDB username
+  password: # BCDB password
+  registration:
+    enabled: false # Enable BCDB registration (reporting instance runnning)?
+    installation-id: -1 # BCDB installation id
+    server-installation-id: -1 # BCDB server installation id
+    cron: "0/30 * * * * ?" # BCDB registration cron expression.
