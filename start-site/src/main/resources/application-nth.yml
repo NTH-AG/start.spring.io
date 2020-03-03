@@ -1,0 +1,145 @@
+
+nth:
+  versions:
+    common-boot: LATEST
+    spring-modules: LATEST
+    inspinia-thymeleaf: LATEST
+    kendoui-professional: RELEASE
+    acf: LATEST
+  initializr:
+    group-id:
+      value: org.nth
+    description:
+      value: NTH Demo project for Spring Boot
+    env:
+      repositories:
+        nth-nexus-releases:
+          name: NTH Nexus Releases
+          url: http://dev1-git1.loc.ch:8675/nexus/content/repositories/releases
+        nth-nexus-snapshots:
+          name: NTH Nexus Snapshots
+          url: http://dev1-git1.loc.ch:8675/nexus/content/repositories/snapshot-policy
+          snapshots-enabled: true
+    dependencies:
+      - name: NTH Common Boot
+        content:
+          - name: Common Data JPA
+            id: nth-common-data-jpa
+            groupId: org.nth.common
+            artifactId: common-data-jpa
+            description: NTH Common Data JPA
+            version: ${nth.versions.common-boot}
+            starter: false
+            facets:
+              - jpa
+          - name: Common BCDB
+            id: nth-common-bcdb
+            groupId: org.nth.common
+            artifactId: common-bcdb
+            description: NTH Common BCDB
+            version: ${nth.versions.common-boot}
+            starter: false
+          - name: Common BigEye
+            id: nth-common-bigeye
+            groupId: org.nth.common
+            artifactId: common-bigeye
+            description: NTH Common BigEye
+            version: ${nth.versions.common-boot}
+            starter: false
+          - name: Common Cloud Config
+            id: nth-common-cloud-config
+            groupId: org.nth.common
+            artifactId: common-cloud-config
+            description: NTH Common Cloud Config
+            version: ${nth.versions.common-boot}
+            starter: false
+          - name: Common Data Elasticsearch
+            id: nth-common-data-elasticsearch
+            groupId: org.nth.common
+            artifactId: common-data-elasticsearch
+            description: NTH Common Data Elasticsearch
+            version: ${nth.versions.common-boot}
+            starter: false
+          - name: Common Leader Election
+            id: nth-common-leader-election
+            groupId: org.nth.common
+            artifactId: common-leader-election
+            description: NTH Common Leader Election
+            version: ${nth.versions.common-boot}
+            starter: false
+          - name: Common Data Mail
+            id: nth-common-mail
+            groupId: org.nth.common
+            artifactId: common-mail
+            description: NTH Common Mail
+            version: ${nth.versions.common-boot}
+            starter: false
+          - name: Common Watcher
+            id: nth-common-watcher
+            groupId: org.nth.common
+            artifactId: common-watcher
+            description: NTH Common Watcher
+            version: ${nth.versions.common-boot}
+            starter: false
+      - name: NTH Spring Modules
+        content:
+          - name: NTH Spring Modules
+            id: nth-spring-modules
+            groupId: org.nth.modules
+            artifactId: spring-modules
+            description: NTH Spring Modules
+            version: ${nth.versions.spring-modules}
+            links:
+              - rel: guide
+                href: http://dev1-git1.int.ch/spring-modules/spring-modules
+          - name: NTH Spring Modules Admin
+            id: nth-spring-modules-admin
+            groupId: org.nth.modules
+            artifactId: spring-modules-admin
+            description: NTH Spring Modules Admin
+            version: ${nth.versions.spring-modules}
+            links:
+              - rel: guide
+                href: http://dev1-git1.int.ch/spring-modules/spring-modules
+      - name: NTH WEB
+        content:
+          - name: Inspinia Thymeleaf
+            id: nth-inspinia-thymeleaf
+            groupId: org.nth.inspinia
+            artifactId: inspinia-thymeleaf
+            description: NTH Inspinia Thymeleaf
+            version: ${nth.versions.inspinia-thymeleaf}
+            starter: false
+            facets:
+              - web
+          - name: Kendo UI Professional
+            id: nth-kendoui-professional
+            groupId: org.webjars
+            artifactId: kendoui-professional
+            description: NTH WebJar for kendoui-professional
+            version: ${nth.versions.kendoui-professional}
+            starter: false
+            facets:
+              - web
+      - name: NTH ACF
+        content:
+          - name: NTH ACF SSO Starter
+            id: nth-acf-starter-sso
+            groupId: org.nth.acf
+            artifactId: acf-starter-sso
+            description: NTH Starter for ACF SSO
+            version: ${nth.versions.acf}
+            facets:
+              - web
+            links:
+              - rel: guide
+                href: http://dev1-git1.int.ch/acf/acf-samples
+          - name: NTH ACF Binding Starter
+            id: nth-acf-starter-binding
+            groupId: org.nth.acf
+            artifactId: acf-starter-binding
+            description: NTH Starter for ACF UpFront Binding
+            version: ${nth.versions.acf}
+            links:
+              - rel: guide
+                href: http://dev1-git1.int.ch/acf/acf-samples

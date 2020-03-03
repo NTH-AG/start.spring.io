@@ -1,0 +1,7 @@
+logging:
+  history:
+    max: 30 # http://logback.qos.ch/manual/appenders.html#tbrpMaxHistory
+    clean-on-start: true # http://logback.qos.ch/manual/appenders.html#tbrpCleanHistoryOnStart
+  file:
+    path: ./logs
+    name: ${logging.file.path}/${spring.application.name} # Log file name, if not configured application will log to system out
