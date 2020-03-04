@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 import io.spring.initializr.generator.buildsystem.Dependency;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.buildsystem.MavenRepository;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
@@ -56,6 +57,17 @@ public class NthProjectGenerationConfiguration {
 			typeDeclaration.annotate(Annotation.name("com.nth.common.bcdb.EnableBcdb"));
 			typeDeclaration.annotate(Annotation.name("org.springframework.scheduling.annotation.EnableScheduling"));
 		};
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-common-bcdb")
+	public BuildCustomizer<MavenBuild> nthBcdbRestClientDependencyBuildCustomizer() {
+		return (build) -> build.dependencies().add("nth-bcdb-rest-client");
+	}
+
+	@Bean
+	public BuildCustomizer<MavenBuild> janinoDependencyBuildCustomizer() {
+		return (build) -> build.dependencies().add("janino", "org.codehaus.janino", "janino", DependencyScope.COMPILE);
 	}
 
 	@Bean
@@ -150,7 +162,7 @@ public class NthProjectGenerationConfiguration {
 	}
 
 	@Bean
-	public BuildCustomizer<MavenBuild> nthMavenBuildBuildCustomizer() {
+	public BuildCustomizer<MavenBuild> nthMavenBuildBuildCustomizer(ProjectDescription projectDescription) {
 		return (build) -> {
 			// add our distribution management
 			build.distributionManagement()
@@ -202,6 +214,13 @@ public class NthProjectGenerationConfiguration {
 					});
 				});
 			});
+
+			if (StringUtils.hasText(projectDescription.getLanguage().jvmVersion())) {
+				if (!"1.8".equals(projectDescription.getLanguage().jvmVersion())) {
+					build.dependencies().add("jaxb-runtime", "org.glassfish.jaxb", "jaxb-runtime",
+							DependencyScope.COMPILE);
+				}
+			}
 
 			NexusArtifactResolver resolver = new NexusArtifactResolver();
 			// replace LATEST and RELEASE versions with real versions from Nexus
