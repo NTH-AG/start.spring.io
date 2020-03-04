@@ -143,3 +143,10 @@ nth:
             links:
               - rel: guide
                 href: http://dev1-git1.int.ch/acf/acf-samples
+      - name: NTH BCDB
+        content:
+          - name: BCDB REST Client
+            id: nth-bcdb-rest-client
+            groupId: org.nth.bcdb
+            artifactId: bcdb-rest-client
+            version: LATEST
