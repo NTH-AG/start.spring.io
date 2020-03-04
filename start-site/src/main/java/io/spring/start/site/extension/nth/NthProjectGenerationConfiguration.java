@@ -190,7 +190,7 @@ public class NthProjectGenerationConfiguration {
 					configuration.configure("embeddedLaunchScriptProperties",
 							(embeddedLaunchScriptProperties) -> embeddedLaunchScriptProperties.add("mode", "service"));
 				});
-				plugin.execution("default", (execution) -> execution.phase("package").goal("build-info"));
+				plugin.execution("default", (execution) -> execution.goal("build-info"));
 			});
 
 			// add maven-assembly-plugin
