@@ -20,12 +20,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 
 import io.spring.initializr.generator.buildsystem.Dependency;
 import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.buildsystem.MavenRepository;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
+import io.spring.initializr.generator.io.template.MustacheTemplateRenderer;
+import io.spring.initializr.generator.io.text.MustacheSection;
 import io.spring.initializr.generator.language.Annotation;
 import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.project.ProjectDescription;
@@ -35,6 +38,7 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.generator.project.contributor.SingleResourceProjectContributor;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import io.spring.initializr.generator.spring.code.MainApplicationTypeCustomizer;
+import io.spring.initializr.generator.spring.documentation.HelpDocumentCustomizer;
 import io.spring.initializr.generator.version.VersionReference;
 import io.spring.start.site.extension.nth.NexusArtifactResolver.ArtifactResolveResource;
 import org.slf4j.LoggerFactory;
@@ -144,6 +148,37 @@ public class NthProjectGenerationConfiguration {
 	@Bean
 	public MultipleResourcesProjectContributor deployResources() {
 		return new MultipleResourcesProjectContributor("nth-project-template", (s) -> s.endsWith(".sh"));
+	}
+
+	@ConditionalOnRequestedDependency("nth-inspinia-thymeleaf")
+	@Bean
+	public MultipleResourcesProjectContributor thymeleafDefaultTemplatesContributor() {
+		return new MultipleResourcesProjectContributor("nth-project-template-thymeleaf");
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-inspinia-thymeleaf")
+	public BuildCustomizer<MavenBuild> thymeleafSpringSecurityCustomizer() {
+		return (build) -> {
+			build.dependencies().add("security");
+			build.dependencies().add("web");
+		};
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-inspinia-thymeleaf")
+	public HelpDocumentCustomizer thymeleafHelpDocumentCustomiezer(MustacheTemplateRenderer templateRenderer) {
+		return (document) -> document
+				.addSection(new MustacheSection(templateRenderer, "nth-inspinia-thymeleaf", Collections.emptyMap()));
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-kendoui-professional")
+	public BuildCustomizer<MavenBuild> kendouiProfessionalSpringSecurityCustomizer() {
+		return (build) -> {
+			build.dependencies().add("security");
+			build.dependencies().add("web");
+		};
 	}
 
 	@Bean
