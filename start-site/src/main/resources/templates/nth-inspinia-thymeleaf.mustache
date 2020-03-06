@@ -1,0 +1,41 @@
+## Inspinia Thymeleaf minimum required code
+
+```java
+
+	@Component
+	class WebConfigurer extends WebSecurityConfigurerAdapter {
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			// @formatter:off
+			http
+					.exceptionHandling()
+					.defaultAuthenticationEntryPointFor(new Http403ForbiddenEntryPoint(), new RequestHeaderRequestMatcher("X-Requested-With", "XMLHttpRequest"))
+					.and()
+					.authorizeRequests()
+					.antMatchers("/login**").permitAll()
+					.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+					.antMatchers( "/**.map").permitAll()
+					.anyRequest().authenticated()
+					.and()
+					.formLogin()
+					.loginPage("/login").permitAll()
+					.and()
+					.rememberMe();
+			// @formatter:on
+		}
+
+	}
+
+	@Component
+	class ViewControllerConfigurer implements WebMvcConfigurer {
+
+		@Override
+		public void addViewControllers(ViewControllerRegistry registry) {
+			registry.addViewController("/").setViewName("home");
+			registry.addViewController("/login").setViewName("login");
+		}
+
+	}
+
+```
