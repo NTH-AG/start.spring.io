@@ -1,0 +1,41 @@
+<div class="sidebar-collapse" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="navigation-sidebar">
+    <ul class="nav metismenu"  id="side-menu">
+        <li class="nav-header">
+            <a class="navbar-minimalize" href="#"><span class="nav-label">NTH</span> <i class="fa fa-bars"></i> </a>
+        </li>
+
+        <li><a href="../home.html" th:href="@{/}" class="brand"><i class="glyphicon glyphicon-home"></i></a></li>
+
+        <!-- TODO: this is only sample, adapt to your application
+        <li sec:authorize="isAuthenticated()">
+            <a href="#"><i class="fa fa-group"></i> <span class="nav-label">SMS</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="../sms/messages.html" th:href="@{/sms/messages}"><i class="fa fa-comments"></i> Messages</a></li>
+                <li><a href="../sms/mt.html" th:href="@{/sms/mt}"><i class="fa fa-send"></i> MT</a></li>
+            </ul>
+        </li>
+
+        <li sec:authorize="isAuthenticated()">
+            <a href="#"><i class="fa fa-group"></i> <span class="nav-label">OMNI</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="../omni/messages.html" th:href="@{/omni/messages}"><i class="fa fa-comments"></i> Messages</a></li>
+                <li><a href="../omni/mt.html" th:href="@{/omni/mt}"><i class="fa fa-send"></i> MT</a></li>
+            </ul>
+        </li>
+
+        <li sec:authorize="isAuthenticated()">
+            <a href="#"><i class="fa fa-tasks"></i> <span class="nav-label">Test Cases</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="../test-cases/test-cases.html" th:href="@{/test-cases}"><i class="fa fa-stethoscope"></i> Test Cases</a></li>
+            </ul>
+        </li>
+        -->
+
+        <li th:unless="${acfEnabled}" sec:authorize="isAuthenticated()">
+            <form id="logout-form" th:action="@{/logout}" method="post">
+            </form>
+            <a href="#" class="overriden" onclick="document.getElementById('logout-form').submit(); return false;"><i class="fa fa-sign-out"></i> <span class="nav-label">Logout <span sec:authentication="name">GUEST</span></span></a>
+        </li>
+        <li sec:authorize="!isAuthenticated()"><a href="../login.html" th:href="@{/login}"><i class="fa fa-sign-in"></i> <span class="nav-label">Login</span></a></li>
+    </ul>
+</div>
