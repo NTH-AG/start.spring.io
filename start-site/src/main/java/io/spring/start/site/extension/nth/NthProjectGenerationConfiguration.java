@@ -126,7 +126,7 @@ public class NthProjectGenerationConfiguration {
 	@Bean
 	public SingleResourceProjectContributor applicationYmlContributor() {
 		return new SingleResourceProjectContributor("src/main/resources/application.yml",
-				"classpath:configuration/application.yml");
+				"classpath:configuration/application.yml.template");
 	}
 
 	@Bean
