@@ -67,7 +67,7 @@ nth:
             description: NTH Common Leader Election
             version: ${nth.versions.common-boot}
             starter: false
-          - name: Common Data Mail
+          - name: Common Mail
             id: nth-common-mail
             groupId: org.nth.common
             artifactId: common-mail
