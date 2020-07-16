@@ -16,6 +16,10 @@
 
 package io.spring.start.site.extension.nth;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.spring.initializr.metadata.DefaultMetadataElement;
 import io.spring.initializr.metadata.InitializrMetadataBuilder;
 import io.spring.initializr.metadata.InitializrProperties;
 import io.spring.initializr.web.support.DefaultInitializrMetadataProvider;
@@ -41,11 +45,15 @@ public class NthInitializrConfiguration {
 
 		initializrMetadataBuilder.withCustomizer((metadata) -> {
 			// remove WAR
-			metadata.getPackagings().getContent().removeIf((p) -> !p.isDefault());
+			List<DefaultMetadataElement> packagings = new ArrayList<>(metadata.getPackagings().getContent());
+			packagings.removeIf((p) -> !p.isDefault());
+			metadata.getPackagings().setContent(packagings);
 			// remove non Maven
 			metadata.getTypes().getContent().removeIf((t) -> !t.isDefault());
 			// remove non Java
-			metadata.getLanguages().getContent().removeIf((l) -> !l.isDefault());
+			List<DefaultMetadataElement> languages = new ArrayList<>(metadata.getLanguages().getContent());
+			languages.removeIf((l) -> !l.isDefault());
+			metadata.getLanguages().setContent(languages);
 			// set Java 11 as default
 			metadata.getJavaVersions().getDefault().setDefault(false);
 			metadata.getJavaVersions().get("11").setDefault(true);
