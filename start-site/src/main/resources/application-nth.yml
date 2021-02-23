@@ -67,6 +67,13 @@ nth:
             description: NTH Common Leader Election
             version: ${nth.versions.common-boot}
             starter: false
+          - name: Common LDAP
+            id: nth-common-ldap
+            groupId: org.nth.common
+            artifactId: common-ldap
+            description: NTH Common LDAP
+            version: ${nth.versions.common-boot}
+            starter: false
           - name: Common Mail
             id: nth-common-mail
             groupId: org.nth.common
