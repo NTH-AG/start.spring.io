@@ -11,23 +11,37 @@ info:
     version: @project.version@
 
 server:
+  forward-headers-strategy: native
   servlet:
     session:
       cookie:
         name: ${spring.application.name}-JSESSIONID
+    encoding:
+      charset: UTF-8
+      enabled: true
   tomcat:
+    remoteip:
+      remote-ip-header: X-Forwarded-For
+      protocol-header: X-Forwarded-Proto
     accesslog:
       directory: ${user.dir}/${logging.file.path:./logs}/access
       enabled: true
-      pattern: common
+      pattern: '%{begin:yyyy-MM-dd HH:mm:ss.SSS}t <%h> [%I] "%r" %s %b (%Dms)'
       request-attributes-enabled: true
       prefix: access_log
       rotate: true
       rename-on-rotate: true
       suffix: .log
+  error:
+    include-binding-errors: always
+    include-exception: true
+    include-message: always
+    include-stacktrace: always
 
 management: # Management configuration
   endpoint:
+    logfile:
+      external-file: ${logging.file.name:}.log
     bigeye:
       check:
         general:
@@ -39,10 +53,20 @@ management: # Management configuration
     web:
       exposure:
         include: "*"
+  trace:
+    http:
+      include: REQUEST_HEADERS, RESPONSE_HEADERS, COOKIE_HEADERS, AUTHORIZATION_HEADER, PRINCIPAL, REMOTE_ADDRESS, SESSION_ID, TIME_TAKEN
 
 spring:
   application:
     name: ${info.app.artifactId}
+  mvc:
+    format:
+      date: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+  jackson:
+    date-format: ${spring.mvc.format.date}
+    time-zone: UTC
+  mandatory-file-encoding: UTF-8
   main:
     banner-mode: log
 

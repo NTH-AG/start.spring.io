@@ -1,7 +1,6 @@
 # use maven docker image to build and deploy application
-# image: maven:3-jdk-7
-# image: maven:3-jdk-8
 # image: maven:latest
+# image: maven:3.6-jdk-11
 image: maven:3.3.9-jdk-8 # Samo ovaj image sam pronasao da radi i surefire (https://gitlab.com/gitlab-org/gitlab-ce/issues/53734)
 
 variables:
