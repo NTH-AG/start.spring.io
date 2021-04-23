@@ -16,7 +16,9 @@
 
 package io.spring.start.site.extension.nth;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -106,10 +108,8 @@ public class NthProjectGenerationConfiguration {
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-data-elasticsearch")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthCommonDataElasticsearchApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration.annotate(Annotation.name(
-				"org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories",
-				(annotation) -> annotation.attribute("repositoryFactoryBeanClass", Class.class,
-						"com.nth.common.data.elasticsearch.support.CustomSimpleElasticsearchRepository")));
+		return (typeDeclaration) -> typeDeclaration.annotate(
+				Annotation.name("com.nth.common.data.elasticsearch.support.EnableRollingElasticsearchRepositories"));
 	}
 
 	@Bean
@@ -191,7 +191,11 @@ public class NthProjectGenerationConfiguration {
 				Files.createFile(output);
 			}
 			Resource resource = resolver.getResource("nth-project-scripts/run.sh");
-			FileCopyUtils.copy(resource.getInputStream(), Files.newOutputStream(output, StandardOpenOption.APPEND));
+			byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
+			String content = new String(bytes, StandardCharsets.UTF_8).replace("java-1.8",
+					"java-" + projectDescription.getLanguage().jvmVersion());
+			ByteArrayInputStream is = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+			FileCopyUtils.copy(is, Files.newOutputStream(output, StandardOpenOption.APPEND));
 			output.toFile().setExecutable(true);
 		};
 	}
