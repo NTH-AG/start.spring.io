@@ -1,7 +1,7 @@
 # use maven docker image to build and deploy application
 # image: maven:latest
-# image: maven:3.6-jdk-11
-image: maven:3.3.9-jdk-8 # Samo ovaj image sam pronasao da radi i surefire (https://gitlab.com/gitlab-org/gitlab-ce/issues/53734)
+image: maven:3.6-jdk-11
+# image: maven:3.3.9-jdk-8 # Samo ovaj image sam pronasao da radi i surefire za JDK 8 buildove (https://gitlab.com/gitlab-org/gitlab-ce/issues/53734)
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -43,6 +43,13 @@ deploy:maven-clean-deploy:
   only:
     - develop
     - master
+
+# Maven manual 'clean deploy'
+build:maven-manual-deploy:
+  stage: build
+  script:
+    - 'mvn $MAVEN_CLI_OPTS clean deploy'
+  when: manual
 
 # Maven 'clean test' na svemu osim master i develop
 verify:maven-clean-verify:
