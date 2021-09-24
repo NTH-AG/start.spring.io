@@ -182,6 +182,12 @@ public class NthProjectGenerationConfiguration {
 	}
 
 	@Bean
+	public HelpDocumentCustomizer nexusHelpDocumentCustomiezer(MustacheTemplateRenderer templateRenderer) {
+		return (document) -> document
+				.addSection(new MustacheSection(templateRenderer, "nth-https-nexus", Collections.emptyMap()));
+	}
+
+	@Bean
 	public ProjectContributor startScriptContributor(ProjectDescription projectDescription) {
 		final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 		return (projectRoot) -> {
@@ -206,20 +212,20 @@ public class NthProjectGenerationConfiguration {
 			// add our distribution management
 			build.distributionManagement()
 					.snapshotRepository((repository) -> repository.id("deployment").uniqueVersion(false)
-							.url("http://dev1-git1.int.ch:8675/nexus/content/repositories/snapshot-policy"));
+							.url("https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy"));
 			build.distributionManagement().repository((repository) -> repository.id("deployment")
-					.url("http://dev1-git1.int.ch:8675/nexus/content/releases"));
+					.url("https://dev1-git1.int.ch:8676/nexus/content/releases"));
 
 			// add our repositories
 			build.repositories()
 					.add(MavenRepository
 							.withIdAndUrl("nth-nexus-releases",
-									"http://dev1-git1.int.ch:8675/nexus/content/repositories/releases")
+									"https://dev1-git1.int.ch:8676/nexus/content/repositories/releases")
 							.name("NTH Nexus Releases").snapshotsEnabled(false));
 			build.repositories()
 					.add(MavenRepository
 							.withIdAndUrl("nth-nexus-snapshots",
-									"http://dev1-git1.int.ch:8675/nexus/content/repositories/snapshot-policy")
+									"https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy")
 							.name("NTH Nexus Snapshots").snapshotsEnabled(true));
 
 			// configure spring-boot-maven-plugin
