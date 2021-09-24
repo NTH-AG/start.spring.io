@@ -1,0 +1,21 @@
+## NTH Nexus using HTTPS
+
+For newer Maven versions you must use HTTPS URLs for Nexus deployment and repositories.
+http://dev1-git1.int.ch:8675 should be changed to https://dev1-git1.int.ch:8676 (also please don't use loc.ch)
+
+Since `dev1-git1.int.ch` is our internal domain, we are using self-signed certificate so you should provide additional JVM option (`-Dmaven.wagon.http.ssl.insecure=true`) to Maven Wagon (https://maven.apache.org/wagon/wagon-providers/wagon-http/)
+to allow self-signed certificates.
+
+Example error:
+```log
+Caused by: java.lang.RuntimeException: org.eclipse.aether.resolution.ArtifactResolutionException: Failure to transfer org.webjars:kendoui-professional:pom:2021.2.616 from https://dev1-git1.int.ch:8676/nexus/content/repositories/releases was cached in the local repository, resolution will not be reattempted until the update interval of nexus-release has elapsed or updates are forced. Original error: Could not transfer artifact org.webjars:kendoui-professional:pom:2021.2.616 from/to nexus-release (https://dev1-git1.int.ch:8676/nexus/content/repositories/releases): Transfer failed for https://dev1-git1.int.ch:8676/nexus/content/repositories/releases/org/webjars/kendoui-professional/2021.2.616/kendoui-professional-2021.2.616.pom
+```
+
+> NOTE: `.gitlab-ci.yml` is already updated for this changes.
+
+For local development, when invoking Maven goals from command line, simply add `-Dmaven.wagon.http.ssl.insecure=true` as argument.
+
+For IDE you should also add this argument, for IntelliJ IDEA you should add this argument to Maven runner and importer.
+- For Maven importer go to 'Settings -> Build, Execution, Deployment -> Build Tools -> Maven -> Importing' and append `-Dmaven.wagon.http.ssl.insecure=true` to 'VM options for importer'
+- For Maven runner go to 'Settings -> Build, Execution, Deployment -> Build Tools -> Maven -> Runner' and append `-Dmaven.wagon.http.ssl.insecure=true` to 'VM Options'
+You should restart your IDE after above changes.
