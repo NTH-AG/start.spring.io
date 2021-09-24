@@ -52,6 +52,7 @@ nth:
             artifactId: common-cloud-config
             description: NTH Common Cloud Config
             version: ${nth.versions.common-boot}
+            bom: spring-cloud
             starter: false
           - name: Common Data Elasticsearch
             id: nth-common-data-elasticsearch
