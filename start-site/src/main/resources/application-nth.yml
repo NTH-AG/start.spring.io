@@ -15,10 +15,10 @@ nth:
       repositories:
         nth-nexus-releases:
           name: NTH Nexus Releases
-          url: http://dev1-git1.int.ch:8675/nexus/content/repositories/releases
+          url: https://dev1-git1.int.ch:8676/nexus/content/repositories/releases
         nth-nexus-snapshots:
           name: NTH Nexus Snapshots
-          url: http://dev1-git1.int.ch:8675/nexus/content/repositories/snapshot-policy
+          url: https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy
           snapshots-enabled: true
     dependencies:
       - name: NTH Common Boot
