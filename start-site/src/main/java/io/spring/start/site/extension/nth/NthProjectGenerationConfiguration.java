@@ -260,12 +260,57 @@ public class NthProjectGenerationConfiguration {
 				});
 			});
 
+			// add maven-enforcer-plugin
+			build.plugins().add("org.apache.maven.plugins", "maven-enforcer-plugin", (plugin) -> {
+				plugin.execution("enforce-banned-dependencies", (execution) -> execution.goal("enforce"));
+				plugin.configuration((configuration) -> {
+					configuration.configure("rules", (rules) -> {
+						rules.add("bannedDependencies", (bannedDependencies) -> {
+							bannedDependencies.configure("excludes", (excludes) -> {
+								excludes.add("exclude", "commons-logging:*");
+								excludes.add("exclude", "org.codehaus.jackson:*");
+							});
+							bannedDependencies.add("searchTransitive", "true");
+						});
+						rules.add("banDuplicateClasses",
+								(banDuplicateClasses) -> banDuplicateClasses.add("findAllDuplicates", "true"));
+						/**
+						 * Currently this is not rendering valid xml, initializr generator
+						 * does not have support for xml attributes of node
+						 * rules.add("restrictImports
+						 * implementation=\"de.skuzzle.enforcer.restrictimports.rule.RestrictImports\"",
+						 * (restrictImports) -> { restrictImports.add("reason", "Use new
+						 * Jackson (com.fasterxml.jackson)");
+						 * restrictImports.add("bannedImport", "org.codehaus.jackson.**");
+						 * }); rules.add("restrictImports
+						 * implementation=\"de.skuzzle.enforcer.restrictimports.rule.RestrictImports\"",
+						 * (restrictImports) -> { restrictImports.add("reason", "Use
+						 * DatatypeConverter.printBase64Binary instead of
+						 * BASE64Encoder.encode"); restrictImports.add("bannedImport",
+						 * "sun.misc.BASE64Encoder"); }); rules.add("restrictImports
+						 * implementation=\"de.skuzzle.enforcer.restrictimports.rule.RestrictImports\"",
+						 * (restrictImports) -> { restrictImports.add("reason", "Use Java
+						 * 8 Time instead of Joda if possible
+						 * (https://www.oracle.com/technical-resources/articles/java/jf14-date-time.html)");
+						 * restrictImports.add("bannedImport", "org.joda.**");
+						 * restrictImports.add("failBuild", "false"); });
+						 */
+					});
+					configuration.add("fail", "true");
+				});
+				plugin.dependency("org.codehaus.mojo", "extra-enforcer-rules", "1.4");
+				plugin.dependency("de.skuzzle.enforcer", "restrict-imports-enforcer-rule", "1.3.0");
+			});
+
 			if (StringUtils.hasText(projectDescription.getLanguage().jvmVersion())) {
 				if (!"1.8".equals(projectDescription.getLanguage().jvmVersion())) {
 					build.dependencies().add("jaxb-runtime", "org.glassfish.jaxb", "jaxb-runtime",
 							DependencyScope.COMPILE);
 				}
 			}
+
+			// add configuration-processor
+			build.dependencies().add("configuration-processor");
 
 			NexusArtifactResolver resolver = new NexusArtifactResolver();
 			// replace LATEST and RELEASE versions with real versions from Nexus
