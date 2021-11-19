@@ -51,10 +51,10 @@ public class NexusArtifactResolver {
 		if ("RELEASE".equalsIgnoreCase(version)) {
 			return resolve(groupId, artifactId, version, "releases");
 		}
-		else if ("LATEST".equalsIgnoreCase(version) || version.contains("SNAPSHOT")) {
+		else if ("LATEST".equalsIgnoreCase(version)) {
 			return resolve(groupId, artifactId, version, "snapshot-policy");
 		}
-		throw new IllegalArgumentException("Don't know which repository to use for " + version + " version.");
+		return null;
 	}
 
 	public ArtifactResolveResource resolve(Dependency dependency) {
