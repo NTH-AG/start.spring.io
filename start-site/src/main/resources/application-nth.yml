@@ -1,7 +1,7 @@
 
 nth:
   versions:
-    common-boot: LATEST
+    common-boot: 1.6.0-SNAPSHOT
     spring-modules: LATEST
     inspinia-thymeleaf: LATEST
     kendoui-professional: RELEASE
@@ -28,7 +28,11 @@ nth:
             groupId: org.nth.common
             artifactId: common-data-jpa
             description: NTH Common Data JPA
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             starter: false
             facets:
               - jpa
@@ -37,21 +41,33 @@ nth:
             groupId: org.nth.common
             artifactId: common-bcdb
             description: NTH Common BCDB
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             starter: false
           - name: Common BigEye
             id: nth-common-bigeye
             groupId: org.nth.common
             artifactId: common-bigeye
             description: NTH Common BigEye
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             starter: false
           - name: Common Cloud Config
             id: nth-common-cloud-config
             groupId: org.nth.common
             artifactId: common-cloud-config
             description: NTH Common Cloud Config
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             bom: spring-cloud
             starter: false
           - name: Common Data Elasticsearch
@@ -59,35 +75,55 @@ nth:
             groupId: org.nth.common
             artifactId: common-data-elasticsearch
             description: NTH Common Data Elasticsearch
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             starter: false
           - name: Common Leader Election
             id: nth-common-leader-election
             groupId: org.nth.common
             artifactId: common-leader-election
             description: NTH Common Leader Election
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             starter: false
           - name: Common LDAP
             id: nth-common-ldap
             groupId: org.nth.common
             artifactId: common-ldap
             description: NTH Common LDAP
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             starter: false
           - name: Common Mail
             id: nth-common-mail
             groupId: org.nth.common
             artifactId: common-mail
             description: NTH Common Mail
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             starter: false
           - name: Common Watcher
             id: nth-common-watcher
             groupId: org.nth.common
             artifactId: common-watcher
             description: NTH Common Watcher
-            version: ${nth.versions.common-boot}
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
             starter: false
       - name: NTH Spring Modules
         content:
