@@ -299,7 +299,7 @@ public class NthProjectGenerationConfiguration {
 					configuration.add("fail", "true");
 				});
 				plugin.dependency("org.codehaus.mojo", "extra-enforcer-rules", "1.4");
-				plugin.dependency("de.skuzzle.enforcer", "restrict-imports-enforcer-rule", "1.3.0");
+				plugin.dependency("de.skuzzle.enforcer", "restrict-imports-enforcer-rule", "1.4.0");
 			});
 
 			if (StringUtils.hasText(projectDescription.getLanguage().jvmVersion())) {
