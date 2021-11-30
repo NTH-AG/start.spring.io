@@ -114,6 +114,15 @@ nth:
               - compatibilityRange: "[2.6.0,2.7.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
+          - name: Common Logging Error Mail
+            id: nth-common-logging-error-mail
+            groupId: org.nth.common
+            artifactId: common-logging-error-mail
+            description: NTH Common Logging Error Mail
+            mappings:
+              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+                version: ${nth.versions.common-boot}
+            starter: false
           - name: Common Watcher
             id: nth-common-watcher
             groupId: org.nth.common
