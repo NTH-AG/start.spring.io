@@ -92,8 +92,15 @@ public class NthProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-mail")
-	public MainApplicationTypeCustomizer<TypeDeclaration> nthMailElectionApplicationAnnotator() {
+	public MainApplicationTypeCustomizer<TypeDeclaration> nthMailApplicationAnnotator() {
 		return (typeDeclaration) -> typeDeclaration.annotate(Annotation.name("com.nth.common.mail.EnableMail"));
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-common-logging-error-mail")
+	public MainApplicationTypeCustomizer<TypeDeclaration> nthLoggingErrorMailElectionApplicationAnnotator() {
+		return (typeDeclaration) -> typeDeclaration
+				.annotate(Annotation.name("com.nth.common.logging.mail.EnableLoggingErrorMail"));
 	}
 
 	@Bean
