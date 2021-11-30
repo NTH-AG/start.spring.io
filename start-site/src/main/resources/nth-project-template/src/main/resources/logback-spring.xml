@@ -15,7 +15,7 @@
 	<!-- Delete old log files on application start also -->
 	<property name="HISTORY_CLEAN_ON_START" value="${CONFIGURED_HISTORY_CLEAN_ON_START:-true}"/>
 	
-	<!-- Create and use FILE appender only if LOG_FILE is defined (logging.file in application.[yml|properties] or Spring environment) -->
+	<!-- Create and use FILE appender only if LOG_FILE is defined (logging.file.name in application.[yml|properties] or Spring environment) -->
 	<if condition='isDefined("LOG_FILE")'>
 		<then>
 			<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -29,9 +29,12 @@
 					<cleanHistoryOnStart>${HISTORY_CLEAN_ON_START}</cleanHistoryOnStart>
 				</rollingPolicy>
 			</appender>
+			<appender name="FILE-Async" class="ch.qos.logback.classic.AsyncAppender">
+				<appender-ref ref="FILE" />
+			</appender>
 
 			<root level="INFO">
-				<appender-ref ref="FILE" />
+				<appender-ref ref="FILE-Async" />
 			</root>
 		</then>
 		<else>
