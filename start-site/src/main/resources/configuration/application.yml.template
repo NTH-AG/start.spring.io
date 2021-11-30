@@ -1,4 +1,6 @@
 logging:
+  pattern:
+    console: "%white(%d{HH:mm:ss.SSS}) %clr(%5p) [%clr(%20t){blue}] %clr(%40logger{39}){cyan} %clr(:){green} %m%n%wEx"
   level:
     org.nth: debug
     com.nth: debug
