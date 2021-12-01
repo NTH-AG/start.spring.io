@@ -13,6 +13,9 @@ function Logo({ className }) {
       y='0px'
       className={className}
       viewBox='0 0 992.4 141.6'
+      style={{
+        height: "50px"
+      }}
     >
       <g>
         <path
