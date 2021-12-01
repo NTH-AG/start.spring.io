@@ -123,7 +123,7 @@ function SideLeft() {
             <a
               rel='noreferrer noopener'
               target='_blank'
-              href='https://github.com/spring-io/start.spring.io'
+              href='https://github.com/NTH-AG/start.spring.io'
             >
               <span className='a-content' tabIndex='-1'>
                 <IconGithub />
@@ -196,7 +196,7 @@ function SideLeft() {
                         <a
                           rel='noreferrer noopener'
                           target='_blank'
-                          href='https://github.com/spring-io/start.spring.io'
+                          href='https://github.com/NTH-AG/start.spring.io'
                         >
                           <span className='a-content' tabIndex='-1'>
                             Github
