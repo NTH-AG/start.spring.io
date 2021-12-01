@@ -11,6 +11,8 @@ const FILE_EXTENSION = {
   java: 'java',
   xml: 'xml',
   properties: 'properties',
+  yml: 'yaml',
+  sh: 'bash',
   groovy: 'groovy',
   yaml: 'yaml',
   yml: 'yaml',
