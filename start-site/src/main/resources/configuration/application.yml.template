@@ -71,39 +71,3 @@ spring:
   mandatory-file-encoding: UTF-8
   main:
     banner-mode: log
-
-# BCDB
-bcdb:
-  enabled: false # Enable or disable BCDB integration
-  service-url: http://bus1-bcdb.int.ch:8080/bcdb # BCDB service URL
-  username: # BCDB username
-  password: # BCDB password
-  registration:
-    enabled: false # Enable BCDB registration (reporting instance runnning)?
-    installation-id: -1 # BCDB installation id
-    server-installation-id: -1 # BCDB server installation id
-    cron: "0/30 * * * * ?" # BCDB registration cron expression.
-
-# Error mail (nth-common-logging-error-mail)
-error:
-  mail:
-    enabled: false
-    host: CHANGEME
-    port: 25
-    username: CHANGEME
-    password: CHANGEME
-    properties:
-      mail.smtp.connectiontimeout: 5000
-      mail.smtp.timeout: 3000
-      mail.smtp.writetimeout: 5000
-    from: ${spring.application.name}@nth.ch
-    subject-time-report: "Log event report for last {interval} minutes."
-    subject-threshold-report: "{count} errors and {warningCount} warnings occurred in time period from {startTime} to {endTime}."
-    error-count-min: 50
-    warn-count-min: 200
-    interval-time: 3h
-    attachment-compression: zip
-    to:
-    - CHANGEME
-    #cc:
-    #- CHANGEME
