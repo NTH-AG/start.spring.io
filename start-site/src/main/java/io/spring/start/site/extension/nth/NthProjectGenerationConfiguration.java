@@ -67,6 +67,13 @@ public class NthProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-bcdb")
+	public HelpDocumentCustomizer nthBcdbHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
+		return (document) -> document
+				.addSection(new MustacheSection(templateRenderer, "nth-common-bcdb", Collections.emptyMap()));
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-common-bcdb")
 	public BuildCustomizer<MavenBuild> nthBcdbRestClientDependencyBuildCustomizer() {
 		return (build) -> build.dependencies().add("nth-bcdb-rest-client");
 	}
@@ -98,9 +105,16 @@ public class NthProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-logging-error-mail")
-	public MainApplicationTypeCustomizer<TypeDeclaration> nthLoggingErrorMailElectionApplicationAnnotator() {
+	public MainApplicationTypeCustomizer<TypeDeclaration> nthLoggingErrorMailApplicationAnnotator() {
 		return (typeDeclaration) -> typeDeclaration
 				.annotate(Annotation.name("com.nth.common.logging.mail.EnableLoggingErrorMail"));
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-common-logging-error-mail")
+	public HelpDocumentCustomizer nthLoggingErrorMailHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
+		return (document) -> document.addSection(
+				new MustacheSection(templateRenderer, "nth-common-logging-error-mail", Collections.emptyMap()));
 	}
 
 	@Bean
@@ -174,7 +188,7 @@ public class NthProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-inspinia-thymeleaf")
-	public HelpDocumentCustomizer thymeleafHelpDocumentCustomiezer(MustacheTemplateRenderer templateRenderer) {
+	public HelpDocumentCustomizer thymeleafHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
 		return (document) -> document
 				.addSection(new MustacheSection(templateRenderer, "nth-inspinia-thymeleaf", Collections.emptyMap()));
 	}
@@ -189,7 +203,7 @@ public class NthProjectGenerationConfiguration {
 	}
 
 	@Bean
-	public HelpDocumentCustomizer nexusHelpDocumentCustomiezer(MustacheTemplateRenderer templateRenderer) {
+	public HelpDocumentCustomizer nexusHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
 		return (document) -> document
 				.addSection(new MustacheSection(templateRenderer, "nth-https-nexus", Collections.emptyMap()));
 	}

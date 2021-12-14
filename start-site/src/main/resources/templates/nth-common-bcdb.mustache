@@ -1,0 +1,17 @@
+## NTH Common BCDB
+
+### Configuration
+
+```yaml
+# BCDB
+bcdb:
+  enabled: false # Enable or disable BCDB integration
+  service-url: http://bus1-bcdb.int.ch:8080/bcdb # BCDB service URL
+  username: # BCDB username
+  password: # BCDB password
+  registration:
+    enabled: false # Enable BCDB registration (reporting instance runnning)?
+    installation-id: -1 # BCDB installation id
+    server-installation-id: -1 # BCDB server installation id
+    cron: "0/30 * * * * ?" # BCDB registration cron expression.
+```
