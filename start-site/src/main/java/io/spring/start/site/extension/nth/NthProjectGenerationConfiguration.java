@@ -319,7 +319,7 @@ public class NthProjectGenerationConfiguration {
 					});
 					configuration.add("fail", "true");
 				});
-				plugin.dependency("org.codehaus.mojo", "extra-enforcer-rules", "1.4");
+				plugin.dependency("org.codehaus.mojo", "extra-enforcer-rules", "1.5.1");
 				plugin.dependency("de.skuzzle.enforcer", "restrict-imports-enforcer-rule", "2.0.0");
 			});
 
