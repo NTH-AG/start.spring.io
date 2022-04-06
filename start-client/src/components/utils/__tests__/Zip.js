@@ -22,6 +22,8 @@ describe('getLanguage', () => {
     expect(getLanguage('index.xml')).toBe('xml')
     expect(getLanguage('index.properties')).toBe('properties')
     expect(getLanguage('index.groovy')).toBe('groovy')
+    expect(getLanguage('mvnw')).toBe('bash')
+    expect(getLanguage('command.cmd')).toBe('batch')
     expect(getLanguage('index.yml')).toBe('yaml')
     expect(getLanguage('index.yaml')).toBe('yaml')
   })
@@ -30,8 +32,6 @@ describe('getLanguage', () => {
     expect(getLanguage('index.html')).toBe(null)
     expect(getLanguage('index.css')).toBe(null)
     expect(getLanguage('index.scss')).toBe(null)
-    expect(getLanguage('mvnw')).toBe(null)
-    expect(getLanguage('command.cmd')).toBe(null)
   })
 })
 
