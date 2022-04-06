@@ -11,14 +11,18 @@ const FILE_EXTENSION = {
   xml: 'xml',
   properties: 'properties',
   yml: 'yaml',
+  yaml: 'yaml',  
   sh: 'bash',
   groovy: 'groovy',
-  yaml: 'yaml',
-  yml: 'yaml',
+  cmd: 'batch',
+  bat: 'batch'
 }
 
 export const getLanguage = file => {
   if (!file.includes(`.`)) {
+    if (file === 'mvnw') {
+      return get(FILE_EXTENSION, 'sh', null)
+    }
     return null
   }
   const extension = file.split(`.`).pop()
