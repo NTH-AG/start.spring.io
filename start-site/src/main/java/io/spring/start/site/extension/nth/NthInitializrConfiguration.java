@@ -56,7 +56,7 @@ public class NthInitializrConfiguration {
 			metadata.getLanguages().setContent(languages);
 			// set Java 11 as default
 			metadata.getJavaVersions().getDefault().setDefault(false);
-			metadata.getJavaVersions().get("11").setDefault(true);
+			metadata.getJavaVersions().get("17").setDefault(true);
 
 			metadata.getGroupId().merge(nthInitializrProperties.getInitializr().getGroupId().getValue());
 			metadata.getArtifactId().merge(nthInitializrProperties.getInitializr().getArtifactId().getValue());
