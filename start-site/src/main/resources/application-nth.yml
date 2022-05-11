@@ -1,7 +1,7 @@
 
 nth:
   versions:
-    common-boot: 1.6.0-SNAPSHOT
+    common-boot: 1.7.0-SNAPSHOT
     spring-modules: LATEST
     inspinia-thymeleaf: LATEST
     kendoui-professional: RELEASE
