@@ -31,7 +31,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
             facets:
@@ -44,7 +44,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common BigEye
@@ -55,7 +55,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Cloud Config
@@ -66,7 +66,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             bom: spring-cloud
             starter: false
@@ -78,7 +78,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Leader Election
@@ -89,7 +89,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common LDAP
@@ -100,7 +100,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Mail
@@ -111,7 +111,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Logging Error Mail
@@ -120,7 +120,7 @@ nth:
             artifactId: common-logging-error-mail
             description: NTH Common Logging Error Mail
             mappings:
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Watcher
@@ -131,7 +131,7 @@ nth:
             mappings:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
-              - compatibilityRange: "[2.6.0,2.7.0-M1)"
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
       - name: NTH Spring Modules
