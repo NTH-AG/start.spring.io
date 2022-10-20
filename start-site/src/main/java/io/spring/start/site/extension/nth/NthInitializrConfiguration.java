@@ -49,7 +49,12 @@ public class NthInitializrConfiguration {
 			packagings.removeIf((p) -> !p.isDefault());
 			metadata.getPackagings().setContent(packagings);
 			// remove non Maven
-			metadata.getTypes().getContent().removeIf((t) -> !t.isDefault());
+			// metadata.getTypes().getContent().removeIf((t) ->
+			// !t.getId().startsWith("maven"));
+			metadata.getTypes().getContent().stream().filter((t) -> !t.getId().equals("maven-project")).findFirst()
+					.ifPresent((t) -> t.setDefault(false));
+			metadata.getTypes().getContent().stream().filter((t) -> t.getId().equals("maven-project")).findFirst()
+					.ifPresent((t) -> t.setDefault(true));
 			// remove non Java
 			List<DefaultMetadataElement> languages = new ArrayList<>(metadata.getLanguages().getContent());
 			languages.removeIf((l) -> !l.isDefault());

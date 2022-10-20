@@ -1,0 +1,130 @@
+## Gradle
+
+### Replacement of placeholders in application.yml
+
+```gradle
+import org.apache.tools.ant.filters.ReplaceTokens
+processResources {
+	with copySpec {
+		from 'src/main/resources'
+		include 'application*.yml'
+		duplicatesStrategy 'include'
+		project.properties.findAll {it.value != null}.each {
+			filter(ReplaceTokens, tokens: [(it.key): it.value.toString()])
+			filter(ReplaceTokens, tokens: [("project." + it.key): it.value.toString()])
+		}
+		filter(ReplaceTokens, tokens: ['project.artifactId': project.property('name')])
+		filter(ReplaceTokens, tokens: ['project.groupId': project.property('group')])
+	}
+}
+```
+
+### Full example for Spring Boot Application
+
+```gradle
+plugins {
+	id 'org.springframework.boot' version '2.7.4'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'java'
+	id 'java-library'
+	id 'distribution'
+	id 'maven-publish'
+}
+
+group = 'org.nth.test'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	deploymentZip
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+processResources {
+	with copySpec {
+		from 'src/main/resources'
+		include 'application*.yml'
+		duplicatesStrategy 'include'
+		project.properties.findAll {it.value != null}.each {
+			filter(ReplaceTokens, tokens: [(it.key): it.value.toString()])
+			filter(ReplaceTokens, tokens: [("project." + it.key): it.value.toString()])
+		}
+		filter(ReplaceTokens, tokens: ['project.artifactId': project.property('name')])
+		filter(ReplaceTokens, tokens: ['project.groupId': project.property('group')])
+	}
+}
+
+springBoot {
+	buildInfo()
+}
+
+java {
+	withSourcesJar()
+}
+
+distributions {
+	main {
+		contents {
+			from 'deploy'
+			from bootJar
+		}
+	}
+}
+
+publishing {
+	repositories {
+		maven {
+			def releasesRepoUrl = 'http://dev1-git1.int.ch:8675/nexus/content/repositories/releases'
+			def snapshotsRepoUrl = 'http://dev1-git1.int.ch:8675/nexus/content/repositories/snapshot-policy'
+			url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+			allowInsecureProtocol true
+			credentials {
+				username = '${NEXUS_USER}'
+				password = '${NEXUS_PASS}'
+			}
+		}
+	}
+	publications {
+		mavenPublication(MavenPublication) {
+			from components.java
+			artifact tasks.named("bootJar")
+			artifact source: distZip, classifier: 'deploy', extension: 'zip'
+		}
+	}
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven { 
+		url 'http://dev1-git1.int.ch:8675/nexus/content/repositories/releases'
+		allowInsecureProtocol true
+	}
+	maven { 
+		url 'http://dev1-git1.int.ch:8675/nexus/content/repositories/snapshot-policy' 
+		allowInsecureProtocol true
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.codehaus.janino:janino'
+	implementation 'org.glassfish.jaxb:jaxb-runtime'
+	implementation 'org.nth.inspinia:inspinia-thymeleaf:2.9.4-SNAPSHOT'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+}
+
+tasks.named('bootJar') {
+	launchScript {
+		properties 'mode': 'service'
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+```

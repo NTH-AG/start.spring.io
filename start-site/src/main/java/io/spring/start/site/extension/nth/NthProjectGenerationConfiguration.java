@@ -24,10 +24,14 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 
+import io.spring.initializr.generator.buildsystem.Build;
 import io.spring.initializr.generator.buildsystem.Dependency;
 import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.buildsystem.MavenRepository;
+import io.spring.initializr.generator.buildsystem.gradle.GradleBuild;
+import io.spring.initializr.generator.buildsystem.gradle.GradleBuildSystem;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
+import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
 import io.spring.initializr.generator.io.template.MustacheTemplateRenderer;
 import io.spring.initializr.generator.io.text.MustacheSection;
@@ -47,6 +51,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.FileCopyUtils;
@@ -74,12 +79,12 @@ public class NthProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-bcdb")
-	public BuildCustomizer<MavenBuild> nthBcdbRestClientDependencyBuildCustomizer() {
+	public BuildCustomizer<Build> nthBcdbRestClientDependencyBuildCustomizer() {
 		return (build) -> build.dependencies().add("nth-bcdb-rest-client");
 	}
 
 	@Bean
-	public BuildCustomizer<MavenBuild> janinoDependencyBuildCustomizer() {
+	public BuildCustomizer<Build> janinoDependencyBuildCustomizer() {
 		return (build) -> build.dependencies().add("janino", "org.codehaus.janino", "janino", DependencyScope.COMPILE);
 	}
 
@@ -167,6 +172,23 @@ public class NthProjectGenerationConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnBuildSystem(GradleBuildSystem.ID)
+	public ProjectContributor mavenAssemblyRemoverContributor() {
+		return new ProjectContributor() {
+			@Override
+			public void contribute(Path projectRoot) throws IOException {
+				Path output = projectRoot.resolve("assembly.xml");
+				Files.delete(output);
+			}
+
+			@Override
+			public int getOrder() {
+				return Ordered.LOWEST_PRECEDENCE;
+			}
+		};
+	}
+
+	@Bean
 	public MultipleResourcesProjectContributor deployResources() {
 		return new MultipleResourcesProjectContributor("nth-project-template", (s) -> s.endsWith(".sh"));
 	}
@@ -179,7 +201,7 @@ public class NthProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-inspinia-thymeleaf")
-	public BuildCustomizer<MavenBuild> thymeleafSpringSecurityCustomizer() {
+	public BuildCustomizer<Build> thymeleafSpringSecurityCustomizer() {
 		return (build) -> {
 			build.dependencies().add("security");
 			build.dependencies().add("web");
@@ -195,7 +217,7 @@ public class NthProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-kendoui-professional")
-	public BuildCustomizer<MavenBuild> kendouiProfessionalSpringSecurityCustomizer() {
+	public BuildCustomizer<Build> kendouiProfessionalSpringSecurityCustomizer() {
 		return (build) -> {
 			build.dependencies().add("security");
 			build.dependencies().add("web");
@@ -236,18 +258,6 @@ public class NthProjectGenerationConfiguration {
 							.url("https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy"));
 			build.distributionManagement().repository((repository) -> repository.id("deployment")
 					.url("https://dev1-git1.int.ch:8676/nexus/content/releases"));
-
-			// add our repositories
-			build.repositories()
-					.add(MavenRepository
-							.withIdAndUrl("nth-nexus-releases",
-									"https://dev1-git1.int.ch:8676/nexus/content/repositories/releases")
-							.name("NTH Nexus Releases").snapshotsEnabled(false));
-			build.repositories()
-					.add(MavenRepository
-							.withIdAndUrl("nth-nexus-snapshots",
-									"https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy")
-							.name("NTH Nexus Snapshots").snapshotsEnabled(true));
 
 			// configure spring-boot-maven-plugin
 			build.plugins().add("org.springframework.boot", "spring-boot-maven-plugin", (plugin) -> {
@@ -322,6 +332,47 @@ public class NthProjectGenerationConfiguration {
 				plugin.dependency("org.codehaus.mojo", "extra-enforcer-rules", "1.5.1");
 				plugin.dependency("de.skuzzle.enforcer", "restrict-imports-enforcer-rule", "2.0.0");
 			});
+		};
+	}
+
+	@ConditionalOnBuildSystem(GradleBuildSystem.ID)
+	@Bean
+	public HelpDocumentCustomizer gradleHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
+		return (document) -> document
+				.addSection(new MustacheSection(templateRenderer, "nth-gradle", Collections.emptyMap()));
+	}
+
+	@Bean
+	public BuildCustomizer<GradleBuild> nthGradleBuildBuildCustomizer(ProjectDescription projectDescription) {
+		return (build) -> {
+			build.plugins().add("java-library");
+			build.plugins().add("distribution");
+			build.plugins().add("maven-publish");
+
+			build.configurations().add("deploymentZip");
+
+			// configure Spring Boot plugin
+			build.tasks().customize("bootJar", (bootJar) -> bootJar.nested("launchScript",
+					(launchScript) -> launchScript.invoke("properties 'mode':", "'service'")));
+		};
+	}
+
+	@Order
+	@Bean
+	public BuildCustomizer<Build> nthRepositoriesAndDependencyVersionsBuildCustomizer(
+			ProjectDescription projectDescription) {
+		return (build) -> {
+			// add our repositories
+			build.repositories()
+					.add(MavenRepository
+							.withIdAndUrl("nth-nexus-releases",
+									"https://dev1-git1.int.ch:8676/nexus/content/repositories/releases")
+							.name("NTH Nexus Releases").snapshotsEnabled(false).releasesEnabled(true));
+			build.repositories()
+					.add(MavenRepository
+							.withIdAndUrl("nth-nexus-snapshots",
+									"https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy")
+							.name("NTH Nexus Snapshots").snapshotsEnabled(true).releasesEnabled(false));
 
 			if (StringUtils.hasText(projectDescription.getLanguage().jvmVersion())) {
 				if (!"1.8".equals(projectDescription.getLanguage().jvmVersion())) {
