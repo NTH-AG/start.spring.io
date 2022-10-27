@@ -16,7 +16,10 @@
 
 package io.spring.start.site.extension.nth;
 
+import java.util.Optional;
+
 import io.spring.initializr.generator.buildsystem.Dependency;
+import io.spring.initializr.generator.version.VersionReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +61,8 @@ public class NexusArtifactResolver {
 	}
 
 	public ArtifactResolveResource resolve(Dependency dependency) {
-		return resolve(dependency.getGroupId(), dependency.getArtifactId(), dependency.getVersion().getValue());
+		return resolve(dependency.getGroupId(), dependency.getArtifactId(),
+				Optional.ofNullable(dependency.getVersion()).map(VersionReference::getValue).orElse(null));
 	}
 
 	public static class ArtifactResolveResource {
