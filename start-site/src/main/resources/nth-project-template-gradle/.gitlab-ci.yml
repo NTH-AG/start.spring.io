@@ -1,0 +1,41 @@
+image: gradle:alpine
+
+variables:
+  DOCKER_DRIVER: overlay2
+  # Disable the Gradle daemon for Continuous Integration servers as correctness
+  # is usually a priority over speed in CI environments. Using a fresh
+  # runtime for each build is more reliable since the runtime is completely
+  # isolated from any previous builds.
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  
+before_script:
+  - "echo '10.50.109.10 dev1-git1.loc.ch' >> /etc/hosts"
+  - GRADLE_USER_HOME="$(pwd)/.gradle"
+  - export GRADLE_USER_HOME
+
+build:auto:
+  stage: build
+  script:
+    - gradle publish
+  #cache:
+  #  key: "$CI_COMMIT_REF_NAME"
+  #  policy: push
+  #  paths:
+  #    - build
+  #    - .gradle 
+  only:
+    - master
+    - develop
+
+build:manual:
+  stage: build
+  script:
+    - gradle publish
+  #cache:
+  #  key: "$CI_COMMIT_REF_NAME"
+  #  policy: push
+  #  paths:
+  #    - build
+  #    - .gradle
+  when: manual
+    

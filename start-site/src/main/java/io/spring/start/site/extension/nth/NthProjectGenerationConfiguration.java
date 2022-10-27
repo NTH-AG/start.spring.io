@@ -31,6 +31,7 @@ import io.spring.initializr.generator.buildsystem.MavenRepository;
 import io.spring.initializr.generator.buildsystem.gradle.GradleBuild;
 import io.spring.initializr.generator.buildsystem.gradle.GradleBuildSystem;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
+import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
 import io.spring.initializr.generator.io.template.MustacheTemplateRenderer;
@@ -172,25 +173,20 @@ public class NthProjectGenerationConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnBuildSystem(GradleBuildSystem.ID)
-	public ProjectContributor mavenAssemblyRemoverContributor() {
-		return new ProjectContributor() {
-			@Override
-			public void contribute(Path projectRoot) throws IOException {
-				Path output = projectRoot.resolve("assembly.xml");
-				Files.delete(output);
-			}
-
-			@Override
-			public int getOrder() {
-				return Ordered.LOWEST_PRECEDENCE;
-			}
-		};
+	public MultipleResourcesProjectContributor projectTemplateResources() {
+		return new MultipleResourcesProjectContributor("nth-project-template", (s) -> s.endsWith(".sh"));
 	}
 
+	@ConditionalOnBuildSystem(MavenBuildSystem.ID)
 	@Bean
-	public MultipleResourcesProjectContributor deployResources() {
-		return new MultipleResourcesProjectContributor("nth-project-template", (s) -> s.endsWith(".sh"));
+	public MultipleResourcesProjectContributor mavenProjectTemplateResources() {
+		return new MultipleResourcesProjectContributor("nth-project-template-maven", (s) -> s.endsWith(".sh"));
+	}
+
+	@ConditionalOnBuildSystem(GradleBuildSystem.ID)
+	@Bean
+	public MultipleResourcesProjectContributor gradleProjectTemplateResources() {
+		return new MultipleResourcesProjectContributor("nth-project-template-gradle", (s) -> s.endsWith(".sh"));
 	}
 
 	@ConditionalOnRequestedDependency("nth-inspinia-thymeleaf")
