@@ -1,7 +1,7 @@
 
 nth:
   versions:
-    common-boot: 1.8.0-SNAPSHOT
+    common-boot: 2.0.0-SNAPSHOT
     spring-modules: LATEST
     inspinia-thymeleaf: LATEST
     kendoui-professional: RELEASE
@@ -32,7 +32,9 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
-                version: ${nth.versions.common-boot}
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
+                version: ${nth.versions.common-boot}                
             starter: false
             facets:
               - jpa
@@ -45,6 +47,8 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common BigEye
@@ -56,6 +60,8 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Cloud Config
@@ -67,6 +73,8 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             bom: spring-cloud
             starter: false
@@ -79,6 +87,8 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Leader Election
@@ -90,6 +100,8 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common LDAP
@@ -101,6 +113,8 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Mail
@@ -112,6 +126,8 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Logging Error Mail
@@ -121,6 +137,8 @@ nth:
             description: NTH Common Logging Error Mail
             mappings:
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Watcher
@@ -132,6 +150,8 @@ nth:
               - compatibilityRange: "[2.4.0,2.6.0)"
                 version: 1.5.0-SNAPSHOT
               - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "[3.0.0,3.1.0-M1)"
                 version: ${nth.versions.common-boot}
             starter: false
       - name: NTH Spring Modules
