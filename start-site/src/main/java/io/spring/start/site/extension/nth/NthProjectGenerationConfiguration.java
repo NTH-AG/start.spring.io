@@ -36,7 +36,7 @@ import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
 import io.spring.initializr.generator.io.template.MustacheTemplateRenderer;
 import io.spring.initializr.generator.io.text.MustacheSection;
-import io.spring.initializr.generator.language.Annotation;
+import io.spring.initializr.generator.language.ClassName;
 import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
@@ -47,7 +47,6 @@ import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import io.spring.initializr.generator.spring.code.MainApplicationTypeCustomizer;
 import io.spring.initializr.generator.spring.documentation.HelpDocumentCustomizer;
 import io.spring.initializr.generator.version.VersionReference;
-import io.spring.start.site.extension.nth.NexusArtifactResolver.ArtifactResolveResource;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.context.annotation.Bean;
@@ -66,8 +65,9 @@ public class NthProjectGenerationConfiguration {
 	@ConditionalOnRequestedDependency("nth-common-bcdb")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthBcdbApplicationAnnotator() {
 		return (typeDeclaration) -> {
-			typeDeclaration.annotate(Annotation.name("com.nth.common.bcdb.EnableBcdb"));
-			typeDeclaration.annotate(Annotation.name("org.springframework.scheduling.annotation.EnableScheduling"));
+			typeDeclaration.annotations().add(ClassName.of("com.nth.common.bcdb.EnableBcdb"));
+			typeDeclaration.annotations()
+				.add(ClassName.of("org.springframework.scheduling.annotation.EnableScheduling"));
 		};
 	}
 
@@ -75,7 +75,7 @@ public class NthProjectGenerationConfiguration {
 	@ConditionalOnRequestedDependency("nth-common-bcdb")
 	public HelpDocumentCustomizer nthBcdbHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
 		return (document) -> document
-				.addSection(new MustacheSection(templateRenderer, "nth-common-bcdb", Collections.emptyMap()));
+			.addSection(new MustacheSection(templateRenderer, "nth-common-bcdb", Collections.emptyMap()));
 	}
 
 	@Bean
@@ -92,62 +92,61 @@ public class NthProjectGenerationConfiguration {
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-watcher")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthWatcherApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration
-				.annotate(Annotation.name("com.nth.common.watcher.config.EnableWatcher"));
+		return (typeDeclaration) -> typeDeclaration.annotations()
+			.add(ClassName.of("com.nth.common.watcher.config.EnableWatcher"));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-leader-election")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthLeaderElectionApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration
-				.annotate(Annotation.name("com.nth.common.leader.EnableLeadershipElection"));
+		return (typeDeclaration) -> typeDeclaration.annotations()
+			.add(ClassName.of("com.nth.common.leader.EnableLeadershipElection"));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-mail")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthMailApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration.annotate(Annotation.name("com.nth.common.mail.EnableMail"));
+		return (typeDeclaration) -> typeDeclaration.annotations().add(ClassName.of("com.nth.common.mail.EnableMail"));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-logging-error-mail")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthLoggingErrorMailApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration
-				.annotate(Annotation.name("com.nth.common.logging.mail.EnableLoggingErrorMail"));
+		return (typeDeclaration) -> typeDeclaration.annotations()
+			.add(ClassName.of("com.nth.common.logging.mail.EnableLoggingErrorMail"));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-logging-error-mail")
 	public HelpDocumentCustomizer nthLoggingErrorMailHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
-		return (document) -> document.addSection(
-				new MustacheSection(templateRenderer, "nth-common-logging-error-mail", Collections.emptyMap()));
+		return (document) -> document
+			.addSection(new MustacheSection(templateRenderer, "nth-common-logging-error-mail", Collections.emptyMap()));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-data-jpa")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthCommonDataJpaApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration
-				.annotate(Annotation.name("org.springframework.data.jpa.repository.config.EnableJpaRepositories",
-						(annotation) -> annotation.attribute("repositoryFactoryBeanClass", Class.class,
-								"com.nth.common.data.jpa.datatables.repository.DataTablesRepositoryFactoryBean")));
+		return (typeDeclaration) -> typeDeclaration.annotations()
+			.add(ClassName.of("org.springframework.data.jpa.repository.config.EnableJpaRepositories"),
+					(builder) -> builder.add("repositoryFactoryBeanClass", ClassName
+						.of("com.nth.common.data.jpa.datatables.repository.DataTablesRepositoryFactoryBean")));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-data-elasticsearch")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthCommonDataElasticsearchApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration.annotate(
-				Annotation.name("com.nth.common.data.elasticsearch.support.EnableRollingElasticsearchRepositories"));
+		return (typeDeclaration) -> typeDeclaration.annotations()
+			.add(ClassName.of("com.nth.common.data.elasticsearch.support.EnableRollingElasticsearchRepositories"));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-spring-modules")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthSpringModulesApplicationAnnotator(
 			ProjectDescription projectDescription) {
-		return (typeDeclaration) -> typeDeclaration
-				.annotate(Annotation.name("com.nth.modules.ModuleScan", (annotation) -> {
-					annotation.attribute("value", String.class, projectDescription.getPackageName());
-					annotation.attribute("reloadableClassPath", String.class, "modules");
-				}));
+		return (typeDeclaration) -> typeDeclaration.annotations()
+			.add(ClassName.of("com.nth.modules.ModuleScan"),
+					(builder) -> builder.add("value", projectDescription.getPackageName())
+						.add("reloadableClassPath", "modules"));
 	}
 
 	@Bean
@@ -208,7 +207,7 @@ public class NthProjectGenerationConfiguration {
 	@ConditionalOnRequestedDependency("nth-inspinia-thymeleaf")
 	public HelpDocumentCustomizer thymeleafHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
 		return (document) -> document
-				.addSection(new MustacheSection(templateRenderer, "nth-inspinia-thymeleaf", Collections.emptyMap()));
+			.addSection(new MustacheSection(templateRenderer, "nth-inspinia-thymeleaf", Collections.emptyMap()));
 	}
 
 	@Bean
@@ -223,7 +222,7 @@ public class NthProjectGenerationConfiguration {
 	@Bean
 	public HelpDocumentCustomizer nexusHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
 		return (document) -> document
-				.addSection(new MustacheSection(templateRenderer, "nth-https-nexus", Collections.emptyMap()));
+			.addSection(new MustacheSection(templateRenderer, "nth-https-nexus", Collections.emptyMap()));
 	}
 
 	@Bean
@@ -250,9 +249,11 @@ public class NthProjectGenerationConfiguration {
 		return (build) -> {
 			// add our distribution management
 			build.distributionManagement()
-					.snapshotRepository((repository) -> repository.id("deployment").uniqueVersion(false)
-							.url("https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy"));
-			build.distributionManagement().repository((repository) -> repository.id("deployment")
+				.snapshotRepository((repository) -> repository.id("deployment")
+					.uniqueVersion(false)
+					.url("https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy"));
+			build.distributionManagement()
+				.repository((repository) -> repository.id("deployment")
 					.url("https://dev1-git1.int.ch:8676/nexus/content/releases"));
 
 			// configure spring-boot-maven-plugin
@@ -335,7 +336,7 @@ public class NthProjectGenerationConfiguration {
 	@Bean
 	public HelpDocumentCustomizer gradleHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
 		return (document) -> document
-				.addSection(new MustacheSection(templateRenderer, "nth-gradle", Collections.emptyMap()));
+			.addSection(new MustacheSection(templateRenderer, "nth-gradle", Collections.emptyMap()));
 	}
 
 	@Bean
@@ -348,8 +349,9 @@ public class NthProjectGenerationConfiguration {
 			build.configurations().add("deploymentZip");
 
 			// configure Spring Boot plugin
-			build.tasks().customize("bootJar", (bootJar) -> bootJar.nested("launchScript",
-					(launchScript) -> launchScript.invoke("properties 'mode':", "'service'")));
+			build.tasks()
+				.customize("bootJar", (bootJar) -> bootJar.nested("launchScript",
+						(launchScript) -> launchScript.invoke("properties 'mode':", "'service'")));
 		};
 	}
 
@@ -360,20 +362,24 @@ public class NthProjectGenerationConfiguration {
 		return (build) -> {
 			// add our repositories
 			build.repositories()
-					.add(MavenRepository
-							.withIdAndUrl("nth-nexus-releases",
-									"https://dev1-git1.int.ch:8676/nexus/content/repositories/releases")
-							.name("NTH Nexus Releases").snapshotsEnabled(false).releasesEnabled(true));
+				.add(MavenRepository
+					.withIdAndUrl("nth-nexus-releases",
+							"https://dev1-git1.int.ch:8676/nexus/content/repositories/releases")
+					.name("NTH Nexus Releases")
+					.snapshotsEnabled(false)
+					.releasesEnabled(true));
 			build.repositories()
-					.add(MavenRepository
-							.withIdAndUrl("nth-nexus-snapshots",
-									"https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy")
-							.name("NTH Nexus Snapshots").snapshotsEnabled(true).releasesEnabled(false));
+				.add(MavenRepository
+					.withIdAndUrl("nth-nexus-snapshots",
+							"https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy")
+					.name("NTH Nexus Snapshots")
+					.snapshotsEnabled(true)
+					.releasesEnabled(false));
 
 			if (StringUtils.hasText(projectDescription.getLanguage().jvmVersion())) {
 				if (!"1.8".equals(projectDescription.getLanguage().jvmVersion())) {
-					build.dependencies().add("jaxb-runtime", "org.glassfish.jaxb", "jaxb-runtime",
-							DependencyScope.COMPILE);
+					build.dependencies()
+						.add("jaxb-runtime", "org.glassfish.jaxb", "jaxb-runtime", DependencyScope.COMPILE);
 				}
 			}
 
@@ -392,14 +398,14 @@ public class NthProjectGenerationConfiguration {
 							version = resolveResource.getVersion();
 						}
 						if (StringUtils.hasText(version)) {
-							build.dependencies().add(id,
-									Dependency.from(dependency).version(VersionReference.ofValue(version)));
+							build.dependencies()
+								.add(id, Dependency.from(dependency).version(VersionReference.ofValue(version)));
 						}
 					}
 				}
 				catch (RestClientException ex) {
-					LoggerFactory.getLogger(getClass()).error("Error resolving dependency {} at Nexus - {}", id,
-							ex.getMessage());
+					LoggerFactory.getLogger(getClass())
+						.error("Error resolving dependency {} at Nexus - {}", id, ex.getMessage());
 				}
 			});
 		};

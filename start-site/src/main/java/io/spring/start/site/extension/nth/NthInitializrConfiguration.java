@@ -40,8 +40,8 @@ public class NthInitializrConfiguration {
 			NthInitializrProperties nthInitializrProperties,
 			InitializrMetadataUpdateStrategy initializrMetadataUpdateStrategy) {
 		InitializrMetadataBuilder initializrMetadataBuilder = InitializrMetadataBuilder
-				.fromInitializrProperties(nthInitializrProperties.getInitializr())
-				.withInitializrProperties(initializrProperties, true);
+			.fromInitializrProperties(nthInitializrProperties.getInitializr())
+			.withInitializrProperties(initializrProperties, true);
 
 		initializrMetadataBuilder.withCustomizer((metadata) -> {
 			// remove WAR
@@ -51,10 +51,18 @@ public class NthInitializrConfiguration {
 			// remove non Maven
 			// metadata.getTypes().getContent().removeIf((t) ->
 			// !t.getId().startsWith("maven"));
-			metadata.getTypes().getContent().stream().filter((t) -> !t.getId().equals("maven-project")).findFirst()
-					.ifPresent((t) -> t.setDefault(false));
-			metadata.getTypes().getContent().stream().filter((t) -> t.getId().equals("maven-project")).findFirst()
-					.ifPresent((t) -> t.setDefault(true));
+			metadata.getTypes()
+				.getContent()
+				.stream()
+				.filter((t) -> !t.getId().equals("maven-project"))
+				.findFirst()
+				.ifPresent((t) -> t.setDefault(false));
+			metadata.getTypes()
+				.getContent()
+				.stream()
+				.filter((t) -> t.getId().equals("maven-project"))
+				.findFirst()
+				.ifPresent((t) -> t.setDefault(true));
 			// remove non Java
 			List<DefaultMetadataElement> languages = new ArrayList<>(metadata.getLanguages().getContent());
 			languages.removeIf((l) -> !l.isDefault());
