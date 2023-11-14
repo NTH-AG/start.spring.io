@@ -33,6 +33,7 @@ import io.spring.initializr.generator.buildsystem.gradle.GradleBuildSystem;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuild;
 import io.spring.initializr.generator.buildsystem.maven.MavenBuildSystem;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
+import io.spring.initializr.generator.condition.ConditionalOnPlatformVersion;
 import io.spring.initializr.generator.condition.ConditionalOnRequestedDependency;
 import io.spring.initializr.generator.io.template.MustacheTemplateRenderer;
 import io.spring.initializr.generator.io.text.MustacheSection;
@@ -80,8 +81,16 @@ public class NthProjectGenerationConfiguration {
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-bcdb")
+	@ConditionalOnPlatformVersion("[2.4.0,3.0.0-M1)")
 	public BuildCustomizer<Build> nthBcdbRestClientDependencyBuildCustomizer() {
 		return (build) -> build.dependencies().add("nth-bcdb-rest-client");
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-common-bcdb")
+	@ConditionalOnPlatformVersion("3.0.0")
+	public BuildCustomizer<Build> nthBcdbRestClientDependencyBuildCustomizerJakarta() {
+		return (build) -> build.dependencies().add("nth-bcdb-rest-client-jakarta");
 	}
 
 	@Bean
