@@ -154,6 +154,32 @@ nth:
               - compatibilityRange: "3.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
+          - name: Common Utils
+            id: nth-common-utils
+            groupId: org.nth.common
+            artifactId: common-utils
+            description: NTH Common Utils
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "3.0.0"
+                version: ${nth.versions.common-boot}
+            starter: false
+          - name: Common SMS
+            id: nth-common-sms
+            groupId: org.nth.common
+            artifactId: common-sms
+            description: NTH Common SMS
+            mappings:
+              - compatibilityRange: "[2.4.0,2.6.0)"
+                version: 1.5.0-SNAPSHOT
+              - compatibilityRange: "[2.6.0,3.0.0-M1)"
+                version: 1.8.0-SNAPSHOT
+              - compatibilityRange: "3.0.0"
+                version: ${nth.versions.common-boot}
+            starter: false
       - name: NTH Spring Modules
         content:
           - name: NTH Spring Modules
