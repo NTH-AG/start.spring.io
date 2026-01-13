@@ -1,0 +1,24 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/vertical}">
+
+<head>
+
+    <th:block layout:fragment="page-meta" th:replace="~{partials/page-meta :: page-meta('Home')}"/>
+    
+</head>
+
+<body>
+<th:block layout:fragment="content">
+
+    <div class="container-fluid">
+
+        <div class="row justify-content-center">
+            Hello
+        </div>
+
+    </div>
+
+</th:block>
+
+</body>
+
+</html>    

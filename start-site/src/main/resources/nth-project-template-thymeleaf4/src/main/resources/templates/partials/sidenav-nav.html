@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block th:fragment="sidenav-nav">
+
+    <!--- Sidenav Menu -->
+    <ul class="side-nav">
+        <li class="side-nav-title" data-lang="menu-title">Menu</li>
+
+        <li class="side-nav-item">
+            <a th:href="@{/}" class="side-nav-link">
+                <span class="menu-icon"><i class="ti ti-home"></i></span>
+                <span class="menu-text" data-lang="landing-page">Home</span>
+            </a>
+        </li>
+
+        <!-- TODO: this is only sample, adapt to your application
+        <li class="side-nav-item">
+            <a data-bs-toggle="collapse" href="#sidebarOmni" aria-expanded="false"
+               aria-controls="sidebarOmni" class="side-nav-link">
+                <span class="menu-icon"><i class="ti ti-settings"></i></span>
+                <span class="menu-text">Omni</span>
+                <span class="menu-arrow"></span>
+            </a>
+            <div class="collapse" id="sidebarOmni">
+                <ul class="sub-menu">
+                    <li class="side-nav-item">
+                        <a th:href="@{/omni-services}" class="side-nav-link">
+                            <span class="menu-text">Services</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+
+        <li class="side-nav-item">
+            <a th:href="@{/messages}" class="side-nav-link">
+                <span class="menu-icon"><i class="ti ti-message-dots"></i></span>
+                <span class="menu-text">Messages</span>
+            </a>
+        </li>
+        -->
+
+    </ul>
+
+</th:block>
+</html>

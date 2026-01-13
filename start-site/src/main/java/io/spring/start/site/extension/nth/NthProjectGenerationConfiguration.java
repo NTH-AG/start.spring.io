@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012 - present the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ import io.spring.initializr.generator.version.VersionReference;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
@@ -59,6 +60,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 
+@Profile("nth")
 @ProjectGenerationConfiguration
 public class NthProjectGenerationConfiguration {
 
@@ -66,9 +68,9 @@ public class NthProjectGenerationConfiguration {
 	@ConditionalOnRequestedDependency("nth-common-bcdb")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthBcdbApplicationAnnotator() {
 		return (typeDeclaration) -> {
-			typeDeclaration.annotations().add(ClassName.of("com.nth.common.bcdb.EnableBcdb"));
+			typeDeclaration.annotations().addSingle(ClassName.of("com.nth.common.bcdb.EnableBcdb"));
 			typeDeclaration.annotations()
-				.add(ClassName.of("org.springframework.scheduling.annotation.EnableScheduling"));
+				.addSingle(ClassName.of("org.springframework.scheduling.annotation.EnableScheduling"));
 		};
 	}
 
@@ -102,27 +104,28 @@ public class NthProjectGenerationConfiguration {
 	@ConditionalOnRequestedDependency("nth-common-watcher")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthWatcherApplicationAnnotator() {
 		return (typeDeclaration) -> typeDeclaration.annotations()
-			.add(ClassName.of("com.nth.common.watcher.config.EnableWatcher"));
+			.addSingle(ClassName.of("com.nth.common.watcher.config.EnableWatcher"));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-leader-election")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthLeaderElectionApplicationAnnotator() {
 		return (typeDeclaration) -> typeDeclaration.annotations()
-			.add(ClassName.of("com.nth.common.leader.EnableLeadershipElection"));
+			.addSingle(ClassName.of("com.nth.common.leader.EnableLeadershipElection"));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-mail")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthMailApplicationAnnotator() {
-		return (typeDeclaration) -> typeDeclaration.annotations().add(ClassName.of("com.nth.common.mail.EnableMail"));
+		return (typeDeclaration) -> typeDeclaration.annotations()
+			.addSingle(ClassName.of("com.nth.common.mail.EnableMail"));
 	}
 
 	@Bean
 	@ConditionalOnRequestedDependency("nth-common-logging-error-mail")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthLoggingErrorMailApplicationAnnotator() {
 		return (typeDeclaration) -> typeDeclaration.annotations()
-			.add(ClassName.of("com.nth.common.logging.mail.EnableLoggingErrorMail"));
+			.addSingle(ClassName.of("com.nth.common.logging.mail.EnableLoggingErrorMail"));
 	}
 
 	@Bean
@@ -136,7 +139,7 @@ public class NthProjectGenerationConfiguration {
 	@ConditionalOnRequestedDependency("nth-common-data-jpa")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthCommonDataJpaApplicationAnnotator() {
 		return (typeDeclaration) -> typeDeclaration.annotations()
-			.add(ClassName.of("org.springframework.data.jpa.repository.config.EnableJpaRepositories"),
+			.addSingle(ClassName.of("org.springframework.data.jpa.repository.config.EnableJpaRepositories"),
 					(builder) -> builder.add("repositoryFactoryBeanClass", ClassName
 						.of("com.nth.common.data.jpa.datatables.repository.DataTablesRepositoryFactoryBean")));
 	}
@@ -145,7 +148,8 @@ public class NthProjectGenerationConfiguration {
 	@ConditionalOnRequestedDependency("nth-common-data-elasticsearch")
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthCommonDataElasticsearchApplicationAnnotator() {
 		return (typeDeclaration) -> typeDeclaration.annotations()
-			.add(ClassName.of("com.nth.common.data.elasticsearch.support.EnableRollingElasticsearchRepositories"));
+			.addSingle(
+					ClassName.of("com.nth.common.data.elasticsearch.support.EnableRollingElasticsearchRepositories"));
 	}
 
 	@Bean
@@ -153,7 +157,7 @@ public class NthProjectGenerationConfiguration {
 	public MainApplicationTypeCustomizer<TypeDeclaration> nthSpringModulesApplicationAnnotator(
 			ProjectDescription projectDescription) {
 		return (typeDeclaration) -> typeDeclaration.annotations()
-			.add(ClassName.of("com.nth.modules.ModuleScan"),
+			.addSingle(ClassName.of("com.nth.modules.ModuleScan"),
 					(builder) -> builder.add("value", projectDescription.getPackageName())
 						.add("reloadableClassPath", "modules"));
 	}
@@ -169,8 +173,8 @@ public class NthProjectGenerationConfiguration {
 		return new ProjectContributor() {
 			@Override
 			public void contribute(Path projectRoot) throws IOException {
-				Path output = projectRoot.resolve("src/main/resources/application.properties");
-				Files.delete(output);
+				Files.deleteIfExists(projectRoot.resolve("src/main/resources/application.yaml"));
+				Files.deleteIfExists(projectRoot.resolve("src/main/resources/application.properties"));
 			}
 
 			@Override
@@ -215,6 +219,28 @@ public class NthProjectGenerationConfiguration {
 	@Bean
 	@ConditionalOnRequestedDependency("nth-inspinia-thymeleaf")
 	public HelpDocumentCustomizer thymeleafHelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
+		return (document) -> document
+			.addSection(new MustacheSection(templateRenderer, "nth-inspinia-thymeleaf", Collections.emptyMap()));
+	}
+
+	@ConditionalOnRequestedDependency("nth-inspinia4-thymeleaf")
+	@Bean
+	public MultipleResourcesProjectContributor thymeleaf4DefaultTemplatesContributor() {
+		return new MultipleResourcesProjectContributor("nth-project-template-thymeleaf4");
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-inspinia4-thymeleaf")
+	public BuildCustomizer<Build> thymeleaf4SpringSecurityCustomizer() {
+		return (build) -> {
+			build.dependencies().add("security");
+			build.dependencies().add("web");
+		};
+	}
+
+	@Bean
+	@ConditionalOnRequestedDependency("nth-inspinia-4thymeleaf")
+	public HelpDocumentCustomizer thymeleaf4HelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
 		return (document) -> document
 			.addSection(new MustacheSection(templateRenderer, "nth-inspinia-thymeleaf", Collections.emptyMap()));
 	}
@@ -267,11 +293,6 @@ public class NthProjectGenerationConfiguration {
 
 			// configure spring-boot-maven-plugin
 			build.plugins().add("org.springframework.boot", "spring-boot-maven-plugin", (plugin) -> {
-				plugin.configuration((configuration) -> {
-					configuration.add("executable", "true");
-					configuration.configure("embeddedLaunchScriptProperties",
-							(embeddedLaunchScriptProperties) -> embeddedLaunchScriptProperties.add("mode", "service"));
-				});
 				plugin.execution("default", (execution) -> execution.goal("build-info"));
 			});
 
@@ -356,11 +377,6 @@ public class NthProjectGenerationConfiguration {
 			build.plugins().add("maven-publish");
 
 			build.configurations().add("deploymentZip");
-
-			// configure Spring Boot plugin
-			build.tasks()
-				.customize("bootJar", (bootJar) -> bootJar.nested("launchScript",
-						(launchScript) -> launchScript.invoke("properties 'mode':", "'service'")));
 		};
 	}
 

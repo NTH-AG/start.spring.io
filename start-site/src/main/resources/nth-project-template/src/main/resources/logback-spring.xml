@@ -16,7 +16,10 @@
 	<property name="HISTORY_CLEAN_ON_START" value="${CONFIGURED_HISTORY_CLEAN_ON_START:-true}"/>
 	
 	<!-- Create and use FILE appender only if LOG_FILE is defined (logging.file.name in application.[yml|properties] or Spring environment) -->
-	<if condition='isDefined("LOG_FILE")'>
+	<condition class="ch.qos.logback.core.boolex.IsPropertyDefinedCondition">
+		<key>LOG_FILE</key>
+	</condition>
+	<if>
 		<then>
 			<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 				<encoder>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012 - present the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,6 @@
 
 package io.spring.start.site.extension.nth;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.spring.initializr.metadata.DefaultMetadataElement;
 import io.spring.initializr.metadata.InitializrMetadataBuilder;
 import io.spring.initializr.metadata.InitializrProperties;
 import io.spring.initializr.web.support.DefaultInitializrMetadataProvider;
@@ -29,7 +25,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 
+@Profile("nth")
 @Configuration
 @EnableConfigurationProperties(NthInitializrProperties.class)
 public class NthInitializrConfiguration {
@@ -44,32 +42,25 @@ public class NthInitializrConfiguration {
 			.withInitializrProperties(initializrProperties, true);
 
 		initializrMetadataBuilder.withCustomizer((metadata) -> {
-			// remove WAR
-			List<DefaultMetadataElement> packagings = new ArrayList<>(metadata.getPackagings().getContent());
-			packagings.removeIf((p) -> !p.isDefault());
-			metadata.getPackagings().setContent(packagings);
-			// remove non Maven
-			// metadata.getTypes().getContent().removeIf((t) ->
-			// !t.getId().startsWith("maven"));
-			metadata.getTypes()
-				.getContent()
-				.stream()
-				.filter((t) -> !t.getId().equals("maven-project"))
-				.findFirst()
-				.ifPresent((t) -> t.setDefault(false));
-			metadata.getTypes()
-				.getContent()
-				.stream()
-				.filter((t) -> t.getId().equals("maven-project"))
-				.findFirst()
-				.ifPresent((t) -> t.setDefault(true));
-			// remove non Java
-			List<DefaultMetadataElement> languages = new ArrayList<>(metadata.getLanguages().getContent());
-			languages.removeIf((l) -> !l.isDefault());
-			metadata.getLanguages().setContent(languages);
-			// set Java 11 as default
+			metadata.getTypes().getContent().forEach((t) -> t.setDefault(t.getId().equals("maven-project")));
+			// set Java 21 as default
 			metadata.getJavaVersions().getDefault().setDefault(false);
-			metadata.getJavaVersions().get("17").setDefault(true);
+			metadata.getJavaVersions().get("21").setDefault(true);
+
+			metadata.getPackagings()
+				.setContent(metadata.getPackagings()
+					.getContent()
+					.stream()
+					.filter(c -> c.getId().equals("jar"))
+					.peek(c -> c.setDefault(true))
+					.toList());
+			metadata.getConfigurationFileFormats()
+				.setContent(metadata.getConfigurationFileFormats()
+					.getContent()
+					.stream()
+					.filter(c -> c.getId().equals("yaml"))
+					.peek(c -> c.setDefault(true))
+					.toList());
 
 			metadata.getGroupId().merge(nthInitializrProperties.getInitializr().getGroupId().getValue());
 			metadata.getArtifactId().merge(nthInitializrProperties.getInitializr().getArtifactId().getValue());

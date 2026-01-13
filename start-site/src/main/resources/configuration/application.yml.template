@@ -7,10 +7,10 @@ logging:
 
 info:
   app:
-    name: @project.name@
-    groupId: @project.groupId@
-    artifactId: @project.artifactId@
-    version: @project.version@
+    name: "@project.name@"
+    groupId: "@project.groupId@"
+    artifactId: "@project.artifactId@"
+    version: "@project.version@"
 
 server:
   forward-headers-strategy: native
@@ -50,13 +50,26 @@ management: # Management configuration
           warning-memory: 95 # Used memory warning percents
     health:
       show-details: always
+      show-components: always
+    env:
+      show-values: always
+    quartz:
+      show-values: always
+    configprops:
+      show-values: always
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
   endpoints:
-    enabled-by-default: true
     web:
       exposure:
         include: "*"
-  trace:
-    http:
+    access:
+      default: unrestricted
+  httpexchanges:
+    recording:
       include: REQUEST_HEADERS, RESPONSE_HEADERS, COOKIE_HEADERS, AUTHORIZATION_HEADER, PRINCIPAL, REMOTE_ADDRESS, SESSION_ID, TIME_TAKEN
 
 spring:

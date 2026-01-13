@@ -4,6 +4,7 @@ nth:
     common-boot: 3.5.0-SNAPSHOT
     spring-modules: LATEST
     inspinia-thymeleaf: LATEST
+    inspinia4-thymeleaf: LATEST
     kendoui-professional: RELEASE
     acf: LATEST
   initializr:
@@ -259,6 +260,15 @@ nth:
             starter: false
             facets:
               - web
+          - name: Inspinia 4 Thymeleaf
+            id: nth-inspinia4-thymeleaf
+            groupId: org.nth.inspinia
+            artifactId: inspinia4-thymeleaf
+            description: NTH Inspinia 4 Thymeleaf
+            version: ${nth.versions.inspinia4-thymeleaf}
+            starter: false
+            facets:
+              - web
           - name: Kendo UI Professional
             id: nth-kendoui-professional
             groupId: org.webjars
@@ -298,7 +308,7 @@ nth:
             artifactId: bcdb-rest-client
             version: LATEST
             compatibilityRange: "[2.4.0,3.0.0-M1)"
-          - name: BCDB REST Client
+          - name: BCDB REST Client Jakarta
             id: nth-bcdb-rest-client-jakarta
             groupId: org.nth.bcdb
             artifactId: bcdb-rest-client-jakarta

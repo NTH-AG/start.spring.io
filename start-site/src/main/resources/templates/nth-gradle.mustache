@@ -4,8 +4,8 @@
 
 ```gradle
 plugins {
-	id 'org.springframework.boot' version '2.7.4'
-	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'org.springframework.boot' version '3.5.9'
+	id 'io.spring.dependency-management' version '1.1.7'
 	id 'java'
 	id 'java-library'
 	id 'distribution'
@@ -14,7 +14,13 @@ plugins {
 
 group = 'org.nth.test'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
+}
+
 
 configurations {
 	compileOnly {
@@ -143,7 +149,6 @@ publishing {
 }
 
 repositories {
-	mavenLocal()
 	mavenCentral()
 	maven { 
 		url 'http://dev1-git1.int.ch:8675/nexus/content/repositories/releases'
@@ -164,12 +169,6 @@ dependencies {
 
 tasks.distTar {
 	enabled = false
-}
-
-tasks.named('bootJar') {
-	launchScript {
-		properties 'mode': 'service'
-	}
 }
 
 tasks.withType(JavaCompile) {
