@@ -51,15 +51,15 @@ public class NthInitializrConfiguration {
 				.setContent(metadata.getPackagings()
 					.getContent()
 					.stream()
-					.filter(c -> c.getId().equals("jar"))
-					.peek(c -> c.setDefault(true))
+					.filter((c) -> c.getId().equals("jar"))
+					.peek((c) -> c.setDefault(true))
 					.toList());
 			metadata.getConfigurationFileFormats()
 				.setContent(metadata.getConfigurationFileFormats()
 					.getContent()
 					.stream()
-					.filter(c -> c.getId().equals("yaml"))
-					.peek(c -> c.setDefault(true))
+					.filter((c) -> c.getId().equals("yaml"))
+					.peek((c) -> c.setDefault(true))
 					.toList());
 
 			metadata.getGroupId().merge(nthInitializrProperties.getInitializr().getGroupId().getValue());

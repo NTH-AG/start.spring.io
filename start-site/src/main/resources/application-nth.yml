@@ -112,6 +112,19 @@ nth:
               - compatibilityRange: "3.5.0"
                 version: ${nth.versions.common-boot}
             starter: false
+          - name: Common Data MongoDB
+            id: nth-common-data-mongodb
+            groupId: org.nth.common
+            artifactId: common-data-mongodb
+            description: NTH Common Data MongoDB
+            mappings:
+              - compatibilityRange: "[3.0.0,3.4.0)"
+                version: 2.0.0-SNAPSHOT
+              - compatibilityRange: "[3.4.0,3.5.0)"
+                version: 3.4.0-SNAPSHOT
+              - compatibilityRange: "3.5.0"
+                version: ${nth.versions.common-boot}
+            starter: false
           - name: Common Leader Election
             id: nth-common-leader-election
             groupId: org.nth.common

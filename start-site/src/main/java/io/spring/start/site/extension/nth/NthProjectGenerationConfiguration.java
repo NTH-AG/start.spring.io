@@ -239,7 +239,7 @@ public class NthProjectGenerationConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnRequestedDependency("nth-inspinia-4thymeleaf")
+	@ConditionalOnRequestedDependency("nth-inspinia4-thymeleaf")
 	public HelpDocumentCustomizer thymeleaf4HelpDocumentCustomizer(MustacheTemplateRenderer templateRenderer) {
 		return (document) -> document
 			.addSection(new MustacheSection(templateRenderer, "nth-inspinia-thymeleaf", Collections.emptyMap()));
@@ -292,9 +292,9 @@ public class NthProjectGenerationConfiguration {
 					.url("https://dev1-git1.int.ch:8676/nexus/content/releases"));
 
 			// configure spring-boot-maven-plugin
-			build.plugins().add("org.springframework.boot", "spring-boot-maven-plugin", (plugin) -> {
-				plugin.execution("default", (execution) -> execution.goal("build-info"));
-			});
+			build.plugins()
+				.add("org.springframework.boot", "spring-boot-maven-plugin",
+						(plugin) -> plugin.execution("default", (execution) -> execution.goal("build-info")));
 
 			// add maven-assembly-plugin
 			build.plugins().add("org.apache.maven.plugins", "maven-assembly-plugin", (plugin) -> {
