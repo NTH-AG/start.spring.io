@@ -1,7 +1,7 @@
 
 nth:
   versions:
-    common-boot: 3.5.0-SNAPSHOT
+    common-boot: 4.0.0-SNAPSHOT
     spring-modules: LATEST
     inspinia-thymeleaf: LATEST
     inspinia4-thymeleaf: LATEST
@@ -38,7 +38,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
             facets:
@@ -57,7 +59,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common BigEye
@@ -74,7 +78,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Cloud Config
@@ -91,7 +97,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             bom: spring-cloud
             starter: false
@@ -109,7 +117,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Data MongoDB
@@ -122,7 +132,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Leader Election
@@ -139,7 +151,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common LDAP
@@ -156,7 +170,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Mail
@@ -173,7 +189,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Logging Error Mail
@@ -188,7 +206,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Watcher
@@ -205,7 +225,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common Utils
@@ -222,7 +244,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
           - name: Common SMS
@@ -239,7 +263,9 @@ nth:
                 version: 2.0.0-SNAPSHOT
               - compatibilityRange: "[3.4.0,3.5.0)"
                 version: 3.4.0-SNAPSHOT
-              - compatibilityRange: "3.5.0"
+              - compatibilityRange: "[3.5.0,4.0.0-M1)"
+                version: 3.5.0-SNAPSHOT
+              - compatibilityRange: "4.0.0"
                 version: ${nth.versions.common-boot}
             starter: false
       - name: NTH Spring Modules
