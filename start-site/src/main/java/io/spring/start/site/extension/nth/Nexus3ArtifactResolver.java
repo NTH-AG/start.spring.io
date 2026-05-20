@@ -16,21 +16,26 @@
 
 package io.spring.start.site.extension.nth;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.spring.initializr.generator.buildsystem.Dependency;
 import io.spring.initializr.generator.version.VersionReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-public class NexusArtifactResolver {
+public class Nexus3ArtifactResolver {
 
-	private static final Logger log = LoggerFactory.getLogger(NexusArtifactResolver.class);
+	private static final Logger log = LoggerFactory.getLogger(Nexus3ArtifactResolver.class);
 
-	private final String url = "http://dev1-git1.int.ch:8675/nexus/service/local/artifact/maven/resolve?g={g}&a={a}&v={v}&r={r}";
+	private final String url = "https://dev-nexus1.nth.ch/service/rest/v1/search/assets?sort=version&maven.groupId={g}&maven.artifactId={a}&repository={r}&maven.extension=pom";
 
 	/**
 	 * Resolve artifact at Nexus.
@@ -44,35 +49,51 @@ public class NexusArtifactResolver {
 	public VersionReference resolve(String groupId, String artifactId, String version, String repository) {
 		log.info("resolve(groupId={}, artifactId={}, version={}, repository={})", groupId, artifactId, version,
 				repository);
-		ArtifactResolveResource data = new RestTemplate()
-			.getForObject(this.url, ArtifactResolveResourceResponse.class, groupId, artifactId, version, repository)
-			.getData();
+		Pattern pattern = Pattern.compile("(.*)-(20[0-9]{6}.[0-9]*-[0-9]*)");
+		Nexus3AssetsResponse data = new RestTemplate().getForObject(this.url, Nexus3AssetsResponse.class, groupId,
+				artifactId, repository);
 		log.info("Resolved: {}", data);
 		if (data != null) {
-			String v = data.getBaseVersion();
-			if (!StringUtils.hasText(version)) {
-				v = data.getVersion();
-			}
-			if (StringUtils.hasText(v)) {
-				return VersionReference.ofValue(v);
+			if (!CollectionUtils.isEmpty(data.items())) {
+				return data.items().stream().map((i) -> i.maven2()).map((m) -> m.version()).filter((v) -> {
+					if ("RELEASE".equals(version)) {
+						return !pattern.matcher(v).matches();
+					}
+					return true;
+				}).map((v) -> {
+					if (StringUtils.hasText(v)) {
+						Matcher matcher = pattern.matcher(v);
+						if (matcher.matches()) {
+							v = matcher.group(1) + "-SNAPSHOT";
+						}
+						return VersionReference.ofValue(v);
+					}
+					return null;
+				}).filter(Objects::nonNull).findFirst().orElse(null);
 			}
 		}
 		return null;
 	}
 
 	public VersionReference resolve(String groupId, String artifactId, String version) {
-		if ("RELEASE".equalsIgnoreCase(version)) {
-			return resolve(groupId, artifactId, version, "releases");
-		}
-		else if ("LATEST".equalsIgnoreCase(version)) {
-			return resolve(groupId, artifactId, version, "snapshot-policy");
-		}
-		return null;
+		return resolve(groupId, artifactId, version, "maven-public");
 	}
 
 	public VersionReference resolve(Dependency dependency) {
 		return resolve(dependency.getGroupId(), dependency.getArtifactId(),
 				Optional.ofNullable(dependency.getVersion()).map(VersionReference::getValue).orElse(null));
+	}
+
+	record Nexus3AssetsResponse(String continuationToken, List<Item> items) {
+
+	}
+
+	record Item(String repository, Maven2 maven2) {
+
+	}
+
+	record Maven2(String extension, String artifactId, String version, String groupId) {
+
 	}
 
 }

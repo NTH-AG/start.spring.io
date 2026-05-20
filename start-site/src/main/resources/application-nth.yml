@@ -16,9 +16,16 @@ nth:
       repositories:
         nth-nexus-releases:
           name: NTH Nexus Releases
-          url: https://dev1-git1.int.ch:8676/nexus/content/repositories/releases
+          url: https://dev-nexus1.nth.ch/repository/maven-releases
         nth-nexus-snapshots:
           name: NTH Nexus Snapshots
+          url: https://dev-nexus1.nth.ch/repository/maven-snapshots
+          snapshots-enabled: true
+        nth-old-nexus-releases:
+          name: NTH OLD Nexus Releases
+          url: https://dev1-git1.int.ch:8676/nexus/content/repositories/releases
+        nth-old-nexus-snapshots:
+          name: NTH OLD Nexus Snapshots
           url: https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy
           snapshots-enabled: true
     dependencies:

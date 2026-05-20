@@ -107,13 +107,12 @@ distributions {
 publishing {
 	repositories {
 		maven {
-			def releasesRepoUrl = 'http://dev1-git1.int.ch:8675/nexus/content/repositories/releases'
-			def snapshotsRepoUrl = 'http://dev1-git1.int.ch:8675/nexus/content/repositories/snapshot-policy'
+			def releasesRepoUrl = 'https://dev-nexus1.nth.ch/repository/maven-releases'
+			def snapshotsRepoUrl = 'https://dev-nexus1.nth.ch/repository/maven-snapshots'
 			url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-			allowInsecureProtocol true
 			credentials {
-				username = System.getenv("MAVEN_REPO_USER")
-				password = System.getenv("MAVEN_REPO_PASS")
+				username = System.getenv("NEXUS_CI_USER")
+				password = System.getenv("NEXUS_CI_PASS")
 			}
 		}
 	}
@@ -150,13 +149,22 @@ publishing {
 
 repositories {
 	mavenCentral()
-	maven { 
-		url 'http://dev1-git1.int.ch:8675/nexus/content/repositories/releases'
-		allowInsecureProtocol true
+	/* New Nexus */
+	maven {
+		url = uri('https://dev-nexus1.nth.ch/repository/maven-releases')
 	}
-	maven { 
-		url 'http://dev1-git1.int.ch:8675/nexus/content/repositories/snapshot-policy' 
-		allowInsecureProtocol true
+	maven {
+		url = uri('https://dev-nexus1.nth.ch/repository/maven-snapshots')
+	}
+	
+	/* Old Nexus */
+	maven {
+		url = 'http://dev1-git1.int.ch:8675/nexus/content/repositories/releases'
+		allowInsecureProtocol = true
+	}
+	maven {
+		url = 'http://dev1-git1.int.ch:8675/nexus/content/repositories/snapshot-policy'
+		allowInsecureProtocol = true
 	}
 }
 

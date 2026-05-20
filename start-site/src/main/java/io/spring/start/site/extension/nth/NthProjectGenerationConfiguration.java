@@ -286,10 +286,10 @@ public class NthProjectGenerationConfiguration {
 			build.distributionManagement()
 				.snapshotRepository((repository) -> repository.id("deployment")
 					.uniqueVersion(false)
-					.url("https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy"));
+					.url("https://dev-nexus1.nth.ch/repository/maven-snapshots"));
 			build.distributionManagement()
 				.repository((repository) -> repository.id("deployment")
-					.url("https://dev1-git1.int.ch:8676/nexus/content/releases"));
+					.url("https://dev-nexus1.nth.ch/repository/maven-releases"));
 
 			// configure spring-boot-maven-plugin
 			build.plugins()
@@ -388,16 +388,28 @@ public class NthProjectGenerationConfiguration {
 			// add our repositories
 			build.repositories()
 				.add(MavenRepository
-					.withIdAndUrl("nth-nexus-releases",
-							"https://dev1-git1.int.ch:8676/nexus/content/repositories/releases")
+					.withIdAndUrl("nth-nexus-releases", "https://dev-nexus1.nth.ch/repository/maven-releases")
 					.name("NTH Nexus Releases")
 					.snapshotsEnabled(false)
 					.releasesEnabled(true));
 			build.repositories()
 				.add(MavenRepository
-					.withIdAndUrl("nth-nexus-snapshots",
-							"https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy")
+					.withIdAndUrl("nth-nexus-snapshots", "https://dev-nexus1.nth.ch/repository/maven-snapshots")
 					.name("NTH Nexus Snapshots")
+					.snapshotsEnabled(true)
+					.releasesEnabled(false));
+			build.repositories()
+				.add(MavenRepository
+					.withIdAndUrl("nth-old-nexus-releases",
+							"https://dev1-git1.int.ch:8676/nexus/content/repositories/releases")
+					.name("NTH OLD Nexus Releases")
+					.snapshotsEnabled(false)
+					.releasesEnabled(true));
+			build.repositories()
+				.add(MavenRepository
+					.withIdAndUrl("nth-old-nexus-snapshots",
+							"https://dev1-git1.int.ch:8676/nexus/content/repositories/snapshot-policy")
+					.name("NTH OLD Nexus Snapshots")
 					.snapshotsEnabled(true)
 					.releasesEnabled(false));
 
@@ -411,21 +423,14 @@ public class NthProjectGenerationConfiguration {
 			// add configuration-processor
 			build.dependencies().add("configuration-processor");
 
-			NexusArtifactResolver resolver = new NexusArtifactResolver();
+			Nexus3ArtifactResolver resolver = new Nexus3ArtifactResolver();
 			// replace LATEST and RELEASE versions with real versions from Nexus
 			build.dependencies().ids().parallel().filter((id) -> id.startsWith("nth-")).forEach((id) -> {
 				Dependency dependency = build.dependencies().get(id);
 				try {
-					ArtifactResolveResource resolveResource = resolver.resolve(dependency);
-					if (resolveResource != null) {
-						String version = resolveResource.getBaseVersion();
-						if (!StringUtils.hasText(version)) {
-							version = resolveResource.getVersion();
-						}
-						if (StringUtils.hasText(version)) {
-							build.dependencies()
-								.add(id, Dependency.from(dependency).version(VersionReference.ofValue(version)));
-						}
+					VersionReference version = resolver.resolve(dependency);
+					if (version != null) {
+						build.dependencies().add(id, Dependency.from(dependency).version(version));
 					}
 				}
 				catch (RestClientException ex) {
