@@ -26,7 +26,7 @@ export PID_FOLDER=.
 export LOG_FOLDER=logs
 export LOG_FILENAME=${project.name}.out
 export JAVA_HOME=/usr/local/java-1.8
-export JAVA_OPTS="-Xms20m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/./urandom --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
+export JAVA_OPTS="-Xms20m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/./urandom --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED --sun-misc-unsafe-memory-access=allow --enable-native-access=ALL-UNNAMED"
 export STOP_WAIT_TIME=60
 export MODE=service
 export JARFILE=${project.name}-${project.version}.jar

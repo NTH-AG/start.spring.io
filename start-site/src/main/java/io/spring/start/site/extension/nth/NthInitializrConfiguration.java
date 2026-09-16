@@ -42,10 +42,15 @@ public class NthInitializrConfiguration {
 			.withInitializrProperties(initializrProperties, true);
 
 		initializrMetadataBuilder.withCustomizer((metadata) -> {
-			metadata.getTypes().getContent().forEach((t) -> t.setDefault(t.getId().equals("maven-project")));
-			// set Java 21 as default
+			metadata.getTypes().getContent().removeIf((t) -> t.getId().equals("gradle-project-kotlin"));
+
+			metadata.getLanguages()
+				.setContent(
+						metadata.getLanguages().getContent().stream().filter(c -> c.getId().equals("java")).toList());
+
+			// set Java 25 as default
 			metadata.getJavaVersions().getDefault().setDefault(false);
-			metadata.getJavaVersions().get("21").setDefault(true);
+			metadata.getJavaVersions().get("25").setDefault(true);
 
 			metadata.getPackagings()
 				.setContent(metadata.getPackagings()
